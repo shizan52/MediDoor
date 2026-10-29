@@ -1,0 +1,21 @@
+// MediDoor Pharmacy — Trusted Web Activity (TWA) wrapper.
+// The app is a thin, signed Android shell around
+// https://pharmacy.medidoor.com.bd — ALL product UI/logic lives on the
+// server, so shipping a web deploy (update_pharmacy.py) updates every
+// installed app instantly, no Play-Store release needed.
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "medidoor-pharmacy"
+include ':app'

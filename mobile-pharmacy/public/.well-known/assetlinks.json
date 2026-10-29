@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "bd.com.medidoor.pharmacy",
+      "sha256_cert_fingerprints": [
+        "3D:81:BA:37:F3:22:01:63:AA:05:07:12:A5:43:D5:93:17:C4:0E:D4:8A:1A:E5:78:2B:B1:08:C4:78:BF:82:19"
+      ]
+    }
+  }
+]

@@ -1,0 +1,44 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'bd.com.medidoor.customer'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "bd.com.medidoor.customer"
+        minSdk 21
+        // Google Play requires new apps/updates to target API 35+ (since Aug 2025).
+        targetSdk 35
+        versionCode 2
+        versionName "1.0.0"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file(MEDIDOOR_STORE_FILE)
+            storePassword MEDIDOOR_STORE_PASSWORD
+            keyAlias MEDIDOOR_KEY_ALIAS
+            keyPassword MEDIDOOR_KEY_PASSWORD
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    // Google's Trusted-Web-Activity helper — provides LauncherActivity,
+    // splash screen, and the browser handoff. No app code needed.
+    implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.5.0'
+}

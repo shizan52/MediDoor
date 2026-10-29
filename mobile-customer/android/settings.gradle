@@ -1,0 +1,21 @@
+// MediDoor Customer — Trusted Web Activity (TWA) wrapper.
+// The app is a thin, signed Android shell around
+// https://customer.medidoor.com.bd — ALL product UI/logic lives on the
+// server, so shipping a web deploy (customer_update.py) updates every
+// installed app instantly, no Play-Store release needed.
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "medidoor-customer"
+include ':app'

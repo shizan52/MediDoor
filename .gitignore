@@ -1,0 +1,85 @@
+# ---------------------------------------------------------------
+# Secrets & private files — must never be committed
+# ---------------------------------------------------------------
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+!.env.example
+!.env.*.example
+*.keystore
+*.jks
+**/android/keystore/
+**/android/local.properties
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+credentials*.json
+cloudflared*.yml
+
+# Private ops tooling / internal notes (kept out of the public repo)
+deploy.py
+deploy_mobile.py
+tools/ops/
+knowledge.md
+docs/server.md
+docs/playstore-*.md
+release/
+.claude/
+
+# Local knowledge-graph tooling (graphify)
+graphify-out/
+.graphifyignore
+
+# Databases & user uploads
+*.db
+*.db-journal
+*.sqlite3
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Signed app binaries
+*.apk
+*.aab
+
+# ---------------------------------------------------------------
+# Build output & dependencies
+# ---------------------------------------------------------------
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+dist/
+.turbo/
+*.tsbuildinfo
+
+# Android (TWA shells)
+**/android/.gradle/
+**/android/app/build/
+**/android/build/
+
+# Local launcher runtime mirrors
+.medidoor-runtime/
+
+# PyInstaller leftovers
+*.spec
+
+# ---------------------------------------------------------------
+# Editor / OS
+# ---------------------------------------------------------------
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*

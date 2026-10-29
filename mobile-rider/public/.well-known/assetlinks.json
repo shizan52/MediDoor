@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "bd.com.medidoor.rider",
+      "sha256_cert_fingerprints": [
+        "E9:4D:49:7B:B7:EC:A8:60:6A:C0:C5:96:F9:46:05:8F:B5:C3:48:10:08:B8:0A:E4:70:8B:D7:91:B2:B3:15:F8"
+      ]
+    }
+  }
+]

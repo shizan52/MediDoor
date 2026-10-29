@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      Opaque app theme. A TRANSLUCENT launcher activity that also requests a
+      fixed screenOrientation crashes on Android 8.0/8.1 with
+      "Only fullscreen opaque activities can request orientation" — the most
+      common TWA crash. Opaque splash keeps the portrait lock safe everywhere.
+
+      System bars use the page/splash background (white), never brand green,
+      so the app never shows coloured slabs above/below the content. Light
+      bars get dark icons (windowLight*Bar; ignored on API < 23/27).
+    -->
+    <style name="Theme.MediDoor" parent="@android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/backgroundColor</item>
+        <item name="android:statusBarColor">@color/backgroundColor</item>
+        <item name="android:navigationBarColor">@color/backgroundColor</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
+
+    <!-- Launcher/splash theme = same opaque base (kept as a named style so
+         the manifest reads clearly and future splash tweaks stay isolated). -->
+    <style name="Theme.MediDoor.Splash" parent="Theme.MediDoor" />
+</resources>

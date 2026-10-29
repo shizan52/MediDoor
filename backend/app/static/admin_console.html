@@ -1,0 +1,1146 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MediDoor · Admin Console</title>
+<link rel="icon" type="image/png" href="/admin/admin-icon.png" />
+<link rel="apple-touch-icon" href="/admin/admin-icon.png" />
+<style>
+  :root{
+    --bg:#0b1220; --panel:#121b2e; --panel2:#172339; --line:#243149;
+    --txt:#e7eefc; --muted:#9fb0cc; --brand:#06ad65; --brand2:#0bd17f;
+    --danger:#ff5a5f; --warn:#ffb020; --ok:#22c55e; --chip:#1d2a44;
+    --shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:radial-gradient(1200px 700px at 80% -10%,#13325a33,transparent),var(--bg);
+    color:var(--txt);font:14px/1.5 "Segoe UI",system-ui,Arial,"Noto Sans Bengali",sans-serif;}
+  button{font:inherit;cursor:pointer;border:0;border-radius:10px;padding:9px 14px;color:#fff;background:var(--panel2);
+    border:1px solid var(--line);transition:.15s;}
+  button:hover{border-color:var(--brand);transform:translateY(-1px)}
+  button.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));border:0;font-weight:600}
+  button.danger{background:#3a1620;border-color:#5b2330;color:#ffd9dc}
+  button.warn{background:#3a2c12;border-color:#5b481f;color:#ffe6b3}
+  button.ghost{background:transparent}
+  button.sm{padding:5px 10px;border-radius:8px;font-size:12px}
+  input,select,textarea{width:100%;background:var(--panel);border:1px solid var(--line);color:var(--txt);
+    border-radius:10px;padding:9px 11px;font:inherit;outline:none}
+  input:focus,textarea:focus,select:focus{border-color:var(--brand)}
+  textarea{resize:vertical;min-height:80px;font-family:inherit}
+  label{display:block;font-size:12px;color:var(--muted);margin:0 0 4px}
+  a{color:var(--brand2)}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .grow{flex:1}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+  .muted{color:var(--muted)}
+  .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;background:var(--chip);border:1px solid var(--line)}
+  .pill.ok{background:#0f2c1c;border-color:#1d5638;color:#7ef0b0}
+  .pill.bad{background:#33151a;border-color:#5b2330;color:#ff9aa0}
+  .pill.warn{background:#332813;border-color:#5b481f;color:#ffd58a}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap;max-width:280px;overflow:hidden;text-overflow:ellipsis}
+  th{color:var(--muted);font-weight:600;position:sticky;top:0;background:var(--panel);z-index:1}
+  tbody tr:hover{background:#16223a}
+  tbody tr.sel{background:#143a2a}
+  .tablewrap{max-height:calc(100vh - 320px);overflow:auto;border:1px solid var(--line);border-radius:12px}
+  #app{display:none;min-height:100vh}
+  .top{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid var(--line);
+    background:#0d1626cc;position:sticky;top:0;z-index:20;backdrop-filter:blur(6px)}
+  .logo{font-weight:800;letter-spacing:.3px}
+  .logo b{color:var(--brand2)}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;padding:10px 18px;border-bottom:1px solid var(--line);background:#0c1422}
+  .tab{padding:8px 14px;border-radius:10px;border:1px solid transparent;color:var(--muted);background:transparent}
+  .tab.active{background:var(--panel2);border-color:var(--line);color:var(--txt)}
+  .wrap{padding:18px;max-width:1500px;margin:0 auto}
+  .sub-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+  .sub-tab{padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:13px}
+  .sub-tab.active{background:var(--brand);border-color:var(--brand);color:#042}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .stat{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:14px}
+  .stat .n{font-size:26px;font-weight:800}
+  .stat .l{color:var(--muted);font-size:12px}
+  #login{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+  #login .card{width:380px;max-width:100%}
+  .brandhead{font-size:22px;font-weight:800;margin-bottom:2px}
+  .brandhead b{color:var(--brand2)}
+  .field{margin-bottom:12px}
+  .err{background:#33151a;border:1px solid #5b2330;color:#ffb3b8;padding:10px 12px;border-radius:10px;white-space:pre-wrap;font-size:12.5px;margin-top:8px}
+  .modal-bg{position:fixed;inset:0;background:#04070dcc;display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+  .modal{background:var(--panel);border:1px solid var(--line);border-radius:16px;max-width:920px;width:100%;
+    max-height:90vh;overflow:auto;box-shadow:var(--shadow)}
+  .modal h3{margin:0;padding:16px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+  .modal .body{padding:18px}
+  .kv{display:grid;grid-template-columns:180px 1fr;gap:4px 12px;font-size:13px}
+  .kv .k{color:var(--muted)}
+  .kv .v{word-break:break-word;white-space:pre-wrap}
+  pre{background:#0a0f1a;border:1px solid var(--line);border-radius:10px;padding:12px;overflow:auto;font-size:12px;max-height:340px}
+  .toast{position:fixed;right:18px;bottom:18px;z-index:80;display:flex;flex-direction:column;gap:8px}
+  .toast div{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:11px 14px;box-shadow:var(--shadow);min-width:220px;animation:sl .2s}
+  .toast div.ok{border-color:#1d5638}.toast div.bad{border-color:#5b2330}
+  @keyframes sl{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+  .thread{display:flex;flex-direction:column;gap:8px;max-height:50vh;overflow:auto;padding:6px}
+  .msg{max-width:78%;padding:8px 12px;border-radius:12px;font-size:13px}
+  .msg.in{align-self:flex-start;background:var(--panel2);border:1px solid var(--line)}
+  .msg.out{align-self:flex-end;background:#143a2a;border:1px solid #1d5638}
+  .msg .t{font-size:10px;color:var(--muted);margin-top:3px}
+  .feat{border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:8px;background:var(--panel2)}
+  .spin{display:inline-block;width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--brand2);border-radius:50%;animation:r .7s linear infinite;vertical-align:-2px}
+  @keyframes r{to{transform:rotate(360deg)}}
+  .small{font-size:12px}
+  .badgebig{font-size:15px;font-weight:800;padding:6px 16px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:.4}}
+  .dropzone{border:2px dashed var(--line);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:.15s;background:var(--panel)}
+  .dropzone:hover{border-color:var(--brand)}
+  .dropzone.drag{border-color:var(--brand2);background:#0f2c1c}
+</style>
+</head>
+<body>
+
+<!-- ===================== LOGIN ===================== -->
+<div id="login">
+  <div class="card">
+    <div style="text-align:center;margin-bottom:10px"><img src="/admin/admin-icon.png" alt="MediDoor Admin" style="width:84px;height:84px;border-radius:50%;object-fit:cover;border:2px solid var(--line);box-shadow:var(--shadow)"></div>
+    <div class="brandhead" style="text-align:center">Medi<b>Door</b> · Admin</div>
+    <div class="muted small" style="margin-bottom:16px;text-align:center">Password দিয়ে login করুন।</div>
+    <div class="field">
+      <label>Password</label>
+      <input id="lg-pw" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" autofocus />
+    </div>
+    <label class="row small" style="margin-bottom:12px"><input type="checkbox" id="lg-remember" style="width:auto;margin-right:8px"> এই browser-এ মনে রাখো</label>
+    <button class="primary" style="width:100%" id="lg-btn" onclick="doLogin()">Login</button>
+    <div id="lg-err" class="err" style="display:none"></div>
+  </div>
+</div>
+
+<!-- ===================== APP ===================== -->
+<div id="app">
+  <div class="top">
+    <div class="logo">Medi<b>Door</b> Admin Console</div>
+    <div class="muted small" id="who"></div>
+    <div class="grow"></div>
+    <button class="sm ghost" onclick="reloadActive()">🔄 Refresh</button>
+    <button class="sm danger" onclick="logout()">Logout</button>
+  </div>
+  <div class="tabs" id="tabs"></div>
+  <div class="wrap" id="view"></div>
+</div>
+
+<div class="modal-bg" id="modalbg" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal"></div>
+</div>
+<!-- Stacked in-app confirm/prompt dialog (replaces native confirm()/prompt()
+     so it renders in-theme AND does not block browser automation). Higher
+     z-index than #modalbg so it sits on top of an open detail modal. -->
+<div class="modal-bg" id="uidlgbg" style="z-index:60" onclick="if(event.target===this)_uiDlgClose(_uiDlgCancel)">
+  <div class="modal" id="uidlg" style="max-width:460px"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* MediDoor Admin Console — password-gated, same-origin SPA. */
+const STATE = { pw: "", token: null, tab: "content" };
+
+/* ---------- auth ---------- */
+async function login() {
+  const r = await fetch("/api/admin/console/login", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ password: STATE.pw }),
+  });
+  if (!r.ok) {
+    const d = await safeDetail(r);
+    if (r.status === 401) throw new Error("ভুল password।");
+    throw new Error("Login failed: HTTP " + r.status + (d ? "\n" + d : ""));
+  }
+  const j = await r.json();
+  STATE.token = j.access_token;
+  if (!STATE.token) throw new Error("Login returned no token.");
+}
+async function safeDetail(r) {
+  try { const t = await r.text(); try { const j = JSON.parse(t); return typeof j.detail === "string" ? j.detail : JSON.stringify(j.detail || j); } catch { return t.slice(0, 600); } } catch { return ""; }
+}
+async function api(path, { method = "GET", body = null } = {}) {
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    if (!STATE.token) await login();
+    const headers = { "Authorization": "Bearer " + STATE.token };
+    if (body !== null) headers["Content-Type"] = "application/json";
+    const r = await fetch(path, { method, headers, body: body !== null ? JSON.stringify(body) : null });
+    if (r.status === 401 && attempt === 1) { STATE.token = null; continue; }
+    if (!r.ok) {
+      const detail = await safeDetail(r);
+      if (r.status === 500)
+        throw new Error("HTTP 500 — backend exception।\n\n" + detail +
+          "\n\nসম্ভাব্য কারণ: production DB-তে missing column (ban/block migration চালানো হয়নি)।");
+      throw new Error("HTTP " + r.status + (detail ? " — " + detail : ""));
+    }
+    const txt = await r.text();
+    return txt ? JSON.parse(txt) : null;
+  }
+}
+
+/* ---------- ui helpers ---------- */
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => (s == null ? "" : String(s)).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+function toast(msg, kind = "ok") { const d = document.createElement("div"); d.className = kind; d.textContent = msg; $("#toast").appendChild(d); setTimeout(() => d.remove(), 3600); }
+function modal(html) { $("#modal").innerHTML = html; $("#modalbg").style.display = "flex"; }
+function closeModal() { $("#modalbg").style.display = "none"; $("#modal").innerHTML = ""; }
+
+/* ---------- in-app confirm / prompt (replace native confirm()/prompt()) ----------
+   Native confirm()/prompt() dialogs freeze the page and are invisible to
+   browser automation (Problem 12 — admin rider "Verify" could not proceed).
+   These async helpers render a themed dialog stacked above the detail modal
+   and resolve a Promise, so callers just `await uiConfirm(...)`/`uiPrompt(...)`. */
+let _uiDlgResolve = null, _uiDlgCancel = false;
+function _uiDlgClose(val) {
+  const r = _uiDlgResolve; _uiDlgResolve = null;
+  $("#uidlgbg").style.display = "none"; $("#uidlg").innerHTML = "";
+  document.removeEventListener("keydown", _uiDlgKey, true);
+  if (r) r(val);
+}
+function _uiDlgKey(e) {
+  if (e.key === "Escape") { e.preventDefault(); _uiDlgClose(_uiDlgCancel); return; }
+  if (e.key !== "Enter" || !$("#uidlgok")) return;
+  const inTextarea = document.activeElement && document.activeElement.tagName === "TEXTAREA";
+  // In the prompt textarea, plain Enter inserts a newline; submit on Ctrl/⌘+Enter.
+  // In a confirm dialog (no textarea), plain Enter confirms.
+  if (inTextarea && !(e.ctrlKey || e.metaKey)) return;
+  e.preventDefault(); $("#uidlgok").click();
+}
+function uiConfirm(message, opts = {}) {
+  _uiDlgCancel = false;
+  const okText = opts.okText || "Confirm";
+  const danger = opts.danger !== false; // confirms are destructive by default
+  return new Promise(res => {
+    _uiDlgResolve = res;
+    $("#uidlg").innerHTML = `<h3><span>${esc(opts.title || "নিশ্চিত করুন")}</span><button class="sm ghost" onclick="_uiDlgClose(false)">✕</button></h3>
+      <div class="body"><div style="font-size:14px;white-space:pre-wrap;line-height:1.5;margin-bottom:18px">${esc(message)}</div>
+      <div class="row" style="justify-content:flex-end;gap:8px"><button class="sm ghost" onclick="_uiDlgClose(false)">বাতিল</button>
+      <button id="uidlgok" class="${danger ? "danger" : "primary"}" onclick="_uiDlgClose(true)">${esc(okText)}</button></div></div>`;
+    $("#uidlgbg").style.display = "flex";
+    document.addEventListener("keydown", _uiDlgKey, true);
+    setTimeout(() => { const b = $("#uidlgok"); if (b) b.focus(); }, 30);
+  });
+}
+function uiPrompt(message, opts = {}) {
+  _uiDlgCancel = null;
+  const def = opts.defaultValue || "";
+  const required = !!opts.required;
+  const okText = opts.okText || "OK";
+  return new Promise(res => {
+    _uiDlgResolve = res;
+    $("#uidlg").innerHTML = `<h3><span>${esc(opts.title || "লিখুন")}</span><button class="sm ghost" onclick="_uiDlgClose(null)">✕</button></h3>
+      <div class="body"><div style="font-size:14px;white-space:pre-wrap;line-height:1.5;margin-bottom:10px">${esc(message)}</div>
+      <textarea id="uidlgin" style="min-height:70px;width:100%">${esc(def)}</textarea>
+      <div id="uidlgerr" class="small" style="color:#ffb3b8;min-height:16px;margin-top:4px"></div>
+      <div class="row" style="justify-content:flex-end;gap:8px"><button class="sm ghost" onclick="_uiDlgClose(null)">বাতিল</button>
+      <button id="uidlgok" class="primary" onclick="_uiPromptOk(${required})">${esc(okText)}</button></div></div>`;
+    $("#uidlgbg").style.display = "flex";
+    document.addEventListener("keydown", _uiDlgKey, true);
+    setTimeout(() => { const el = $("#uidlgin"); if (el) { el.focus(); el.select(); } }, 30);
+  });
+}
+function _uiPromptOk(required) {
+  const el = $("#uidlgin"); const val = el ? el.value.trim() : "";
+  if (required && !val) { const er = $("#uidlgerr"); if (er) er.textContent = "⚠ এই ঘরটি পূরণ করতে হবে।"; return; }
+  _uiDlgClose(val);
+}
+function spinner() { $("#view").innerHTML = '<div class="card"><span class="spin"></span> লোড হচ্ছে…</div>'; }
+function errCard(e) { return `<div class="card"><div class="err" style="display:block">⚠ ${esc(e.message || e)}</div></div>`; }
+function fullUrl(u) { if (!u) return u; return /^https?:/.test(u) ? u : u; }
+
+/* ---------- tabs ---------- */
+const TABS = [["content","📝 Login Content"],["users","👥 Users"],["medai","🤖 Medi AI"],["site","🌐 Site"],["orders","📦 Orders"],["moderation","🛡 Moderation"],["products","🧪 Products"],["audit","🧾 Audit log"]];
+function renderTabs() { $("#tabs").innerHTML = TABS.map(([k, l]) => `<button class="tab ${STATE.tab === k ? "active" : ""}" onclick="go('${k}')">${l}</button>`).join(""); }
+function go(tab) { STATE.tab = tab; renderTabs(); render(); }
+function reloadActive() { render(); }
+const RENDERERS = { content: renderLoginContent, users: renderUsersSection, medai: renderMediAI, site: renderSite, orders: renderOrders, moderation: renderModeration, products: renderProducts, audit: renderAuditLog };
+function render() { (RENDERERS[STATE.tab] || (() => {}))(); }
+
+/* ============================================================ USERS (group) */
+let USERS_SUB = "customers";
+function renderUsersSection() {
+  const sub = (k, l) => `<button class="sub-tab ${USERS_SUB === k ? "active" : ""}" onclick="USERS_SUB='${k}';renderUsersSection()">${l}</button>`;
+  $("#view").innerHTML = `<div class="sub-tabs">${sub("customers", "👤 Customers")}${sub("pharmacies", "🏪 Pharmacies")}${sub("riders", "🚴 Riders")}</div><div id="users-body"><div class="card"><span class="spin"></span> লোড হচ্ছে…</div></div>`;
+  if (USERS_SUB === "riders") renderRiders(); else renderUsers(USERS_SUB);
+}
+function uview(html) { (document.getElementById("users-body") || document.getElementById("view")).innerHTML = html; }
+function uspin() { uview('<div class="card"><span class="spin"></span> লোড হচ্ছে…</div>'); }
+
+/* ============================================================ CONTENT */
+const SECTIONS = [["default","Default (no role)"],["customer","Customer"],["pharmacy","Pharmacy"],["rider","Rider"]];
+const ICONS = ["MapPin","ShieldCheck","Sparkles","Truck","Pill","Wallet","Store","ClipboardList","TrendingUp","Bike"];
+const SCALARS = [["eyebrow","Eyebrow"],["title_top","Title — line 1"],["title_highlight","Title — line 2 (highlight)"],["body","Body"],["stat_value","Stat value"],["stat_label","Stat label"]];
+/* Medi AI ও Site এখন আলাদা top-level tab; Content tab শুধু Login page content দেখায়। */
+let LOGIN_ROLE = "default", LOGIN_DATA = null;
+async function renderLoginContent() {
+  try {
+    if (!LOGIN_DATA) { $("#view").innerHTML = '<div class="card"><span class="spin"></span> লোড হচ্ছে…</div>'; LOGIN_DATA = await api("/api/content/login"); }
+  } catch (e) { $("#view").innerHTML = errCard(e); return; }
+  const s = LOGIN_DATA[LOGIN_ROLE] || {};
+  const label = (SECTIONS.find(x => x[0] === LOGIN_ROLE) || [LOGIN_ROLE, LOGIN_ROLE])[1];
+  const roleBtns = SECTIONS.map(([key, lb]) => `<button class="sub-tab ${LOGIN_ROLE === key ? "active" : ""}" onclick="switchLoginRole('${key}')">${lb}</button>`).join("");
+  $("#view").innerHTML = `
+    <div class="sub-tabs">${roleBtns}</div>
+    <div class="muted small" style="margin:-6px 0 12px">login page-এর বাম পাশের role-অনুযায়ী text। উপরে role বেছে edit করুন, তারপর Save।</div>
+    <div class="card" id="login-editor">
+      <div class="row"><h3 style="margin:0">${esc(label)}</h3><span class="pill">${LOGIN_ROLE}</span><div class="grow"></div>
+        <button class="sm ghost" onclick="reloadLoginContent()">↻ Reload from server</button>
+        <button class="primary sm" onclick="saveLoginSection()">💾 Save ${LOGIN_ROLE}</button></div>
+      <div class="grid2" style="margin-top:12px">
+        ${SCALARS.map(([k, lb]) => `<div><label>${lb}</label>${k === "body" ? `<textarea data-f="${k}" style="min-height:90px">${esc(s[k] || "")}</textarea>` : `<input data-f="${k}" value="${esc(s[k] || "")}">`}</div>`).join("")}
+      </div>
+      <div class="row" style="margin:14px 0 6px"><b>Features</b><button class="sm" onclick="addLoginFeat()">+ Add feature</button></div>
+      <div id="login-feats">${(s.features || []).map(featHtml).join("")}</div>
+    </div>`;
+}
+function captureLoginForm() {
+  if (!LOGIN_DATA) return;
+  const ed = document.getElementById("login-editor");
+  if (!ed) return;
+  const sec = {};
+  ed.querySelectorAll("[data-f]").forEach(el => sec[el.dataset.f] = el.value);
+  sec.features = [...ed.querySelectorAll("#login-feats .feat")].map(fr => {
+    const o = {}; fr.querySelectorAll("[data-ff]").forEach(el => o[el.dataset.ff] = el.value); return o;
+  });
+  LOGIN_DATA[LOGIN_ROLE] = sec;
+}
+function switchLoginRole(role) { captureLoginForm(); LOGIN_ROLE = role; renderLoginContent(); }
+function reloadLoginContent() { LOGIN_DATA = null; renderLoginContent(); }
+function featHtml(f) { f = f || {}; return `<div class="feat row">
+    <div style="width:160px"><label>Icon</label><select data-ff="icon">${ICONS.map(i => `<option ${i === f.icon ? "selected" : ""}>${i}</option>`).join("")}</select></div>
+    <div class="grow"><label>Title</label><input data-ff="title" value="${esc(f.title || "")}"></div>
+    <div class="grow"><label>Body</label><input data-ff="body" value="${esc(f.body || "")}"></div>
+    <button class="danger sm" style="align-self:flex-end" onclick="this.closest('.feat').remove()">✕</button></div>`; }
+function addLoginFeat() { document.getElementById("login-feats").insertAdjacentHTML("beforeend", featHtml({ icon: "Sparkles" })); }
+async function saveLoginSection() {
+  captureLoginForm();
+  const sec = LOGIN_DATA[LOGIN_ROLE] || {};
+  const payload = {};
+  for (const [k] of SCALARS) payload[k] = (sec[k] || "").trim();
+  payload.features = (sec.features || []).map(f => ({ icon: (f.icon || "Sparkles").trim(), title: (f.title || "").trim(), body: (f.body || "").trim() }));
+  for (const [k, lb] of SCALARS) if (!payload[k]) return toast(`'${lb}' খালি রাখা যাবে না (${LOGIN_ROLE})`, "bad");
+  if (!payload.features.length) return toast("কমপক্ষে একটি feature দরকার", "bad");
+  for (const f of payload.features) if (!f.icon || !f.title || !f.body) return toast("Feature-এর সব ঘর পূরণ করুন", "bad");
+  try { await api(`/api/content/login/${LOGIN_ROLE}`, { method: "PUT", body: payload }); LOGIN_DATA[LOGIN_ROLE] = payload; toast(`✅ ${LOGIN_ROLE} saved`); }
+  catch (e) { toast(e.message, "bad"); }
+}
+/* ============================================================ MEDI AI */
+async function renderMediAI() {
+  $("#view").innerHTML = '<div class="card"><span class="spin"></span> লোড হচ্ছে…</div>';
+  let d; try { d = await api("/api/content/medi-ai"); } catch (e) { $("#view").innerHTML = errCard(e); return; }
+  const knowItems = (d.knowledge || []).map(k => aiKnowRow(k)).join("");
+  $("#view").innerHTML = `<div class="card">
+    <div class="row"><h3 style="margin:0">🤖 Medi AI — platform knowledge</h3><span class="pill">${(d.knowledge || []).length} knowledge</span><div class="grow"></div>
+      <button class="sm ghost" onclick="renderMediAI()">↻ Reload</button><button class="primary sm" onclick="saveAI()">💾 Save</button></div>
+    <div class="muted small" style="margin:8px 0 14px">Medi AI bot-কে platform সম্পর্কে শেখান — নাম, behavior (system prompt) আর knowledge entries।</div>
+    <div class="field"><label>Bot name</label><input id="ai-name" value="${esc(d.name || "")}"></div>
+    <div class="field"><label>System prompt (bot কীভাবে আচরণ করবে)</label><textarea id="ai-sys" style="min-height:150px">${esc(d.system_prompt || "")}</textarea></div>
+    <div class="row" style="margin:6px 0"><b>Knowledge entries</b><button class="sm" onclick="addAiKnow()">+ Add knowledge</button></div>
+    <div id="ai-know">${knowItems || '<div class="muted small">কোনো knowledge নেই — Add knowledge চাপুন।</div>'}</div>
+  </div>`;
+}
+function aiKnowRow(val) { return `<div class="row know-row" style="margin-bottom:6px"><textarea class="ai-k" style="min-height:46px">${esc(val || "")}</textarea><button class="danger sm" style="align-self:flex-start" onclick="this.closest('.know-row').remove()">✕</button></div>`; }
+function addAiKnow() { const h = document.getElementById("ai-know"); if (h.querySelector(".muted")) h.innerHTML = ""; h.insertAdjacentHTML("beforeend", aiKnowRow("")); }
+async function saveAI() {
+  const knowledge = [...document.querySelectorAll("#ai-know .ai-k")].map(t => t.value.trim()).filter(Boolean);
+  const body = { name: $("#ai-name").value.trim(), system_prompt: $("#ai-sys").value.trim(), knowledge };
+  if (!body.name || !body.system_prompt) return toast("Name ও system prompt দরকার", "bad");
+  try { await api("/api/content/medi-ai", { method: "PUT", body }); toast("✅ Medi AI saved"); } catch (e) { toast(e.message, "bad"); }
+}
+/* ============================================================ SITE */
+let SITE_DATA = null, SITE_SUB = "banner";
+async function renderSite() {
+  try { if (!SITE_DATA) { $("#view").innerHTML = '<div class="card"><span class="spin"></span> লোড হচ্ছে…</div>'; SITE_DATA = await api("/api/content/site"); normalizeSite(); } }
+  catch (e) { $("#view").innerHTML = errCard(e); return; }
+  const sub = (k, l) => `<button class="sub-tab ${SITE_SUB === k ? "active" : ""}" onclick="switchSiteSub('${k}')">${l}</button>`;
+  const inner = SITE_SUB === "banner" ? siteBannerHtml() : SITE_SUB === "bot" ? siteBotHtml() : SITE_SUB === "favicon" ? siteFaviconHtml() : SITE_SUB === "notice" ? siteNoticeHtml() : siteFooterHtml();
+  const showTopSave = SITE_SUB !== "footer";
+  $("#view").innerHTML = `
+    <div class="row" style="margin-bottom:10px"><h3 style="margin:0">🌐 Site content</h3>
+      <span class="muted small">edit করে যেকোনো সময় Save — পরিবর্তন সাথে সাথে website-এ live হবে।</span><div class="grow"></div>
+      <button class="sm ghost" onclick="reloadSite()">↻ Reload</button>
+      ${showTopSave ? `<button class="primary sm" onclick="saveSiteAll()">💾 Save & publish</button>` : ""}</div>
+    <div class="sub-tabs">${sub("banner", "🖼 Banner")}${sub("bot", "🤖 Bot & Support")}${sub("favicon", "🏷 Favicon")}${sub("notice", "📢 Pharmacy notice")}${sub("footer", "🦶 Footer & Pages")}</div>
+    <div id="site-body">${inner}</div>`;
+  if (SITE_SUB === "footer" && DOCS_DATA === null) loadDocs();
+}
+function normalizeSite() {
+  SITE_DATA.banner = SITE_DATA.banner || {}; SITE_DATA.bot = SITE_DATA.bot || {}; SITE_DATA.admin_support = SITE_DATA.admin_support || {};
+  SITE_DATA.favicon = SITE_DATA.favicon || {};
+  SITE_DATA.footer = SITE_DATA.footer || {}; SITE_DATA.footer.columns = SITE_DATA.footer.columns || []; SITE_DATA.footer.socials = SITE_DATA.footer.socials || [];
+  if (SITE_DATA.pharmacy_notice == null) SITE_DATA.pharmacy_notice = "";
+}
+function switchSiteSub(sub) { captureSite(); captureDocEditor(); SITE_SUB = sub; renderSite(); }
+function reloadSite() { SITE_DATA = null; renderSite(); }
+const siteField = (id, label, val) => `<div><label>${label}</label><input id="${id}" value="${esc(val || "")}"></div>`;
+function siteBannerHtml() {
+  const b = SITE_DATA.banner;
+  return `<div class="card"><b>Homepage banner (hero)</b>
+    <div class="grid2" style="margin-top:10px">
+      ${imgUploadField("st-b-img", "Banner image — desktop", b.image_url, 1600, 0)}
+      ${imgUploadField("st-b-imgm", "Banner image — mobile", b.image_url_mobile, 900, 0)}
+    </div>
+    <div class="grid2" style="margin-top:12px">
+      ${siteField("st-b-eye", "Eyebrow", b.eyebrow)}${siteField("st-b-tt", "Title top", b.title_top)}
+      ${siteField("st-b-th", "Title highlight", b.title_highlight)}${siteField("st-b-sub", "Subtitle", b.subtitle)}</div>
+  </div>`;
+}
+function siteBotHtml() {
+  const bot = SITE_DATA.bot, sup = SITE_DATA.admin_support;
+  return `<div class="card" style="margin-bottom:12px"><b>medi AI bot</b>
+      <div class="grid2" style="margin-top:10px">${siteField("st-bot-name", "Name", bot.name)}${siteField("st-bot-tag", "Tagline", bot.tagline)}</div>
+      <div style="margin-top:10px;max-width:360px">${imgUploadField("st-bot-av", "Avatar", bot.avatar_url, 256, 1)}</div></div>
+    <div class="card"><b>Admin support</b>
+      <div class="grid2" style="margin-top:10px">${siteField("st-sup-name", "Name", sup.name)}${siteField("st-sup-tag", "Tagline", sup.tagline)}</div>
+      <div style="margin-top:10px;max-width:360px">${imgUploadField("st-sup-av", "Avatar", sup.avatar_url, 256, 1)}</div></div>`;
+}
+function siteNoticeHtml() {
+  return `<div class="card"><b>Pharmacy notice</b><div class="muted small" style="margin:6px 0">pharmacy-দের জন্য announcement। খালি রাখলে কিছু দেখাবে না।</div>
+    <textarea id="st-pn" style="min-height:120px">${esc(SITE_DATA.pharmacy_notice || "")}</textarea></div>`;
+}
+function siteFaviconHtml() {
+  const f = SITE_DATA.favicon || {};
+  return `<div class="card"><b>Browser favicon (tab icon)</b>
+    <div class="muted small" style="margin:6px 0">Browser-এর tab-এ যে ছোট icon দেখায়। <b>Square PNG</b> ছবি সবচেয়ে ভালো (আমরা auto max 256px করে দিই)। খালি রাখলে default MediDoor logo দেখাবে। Save করলে সাথে সাথে website-এ live হবে।</div>
+    <div style="max-width:360px">${imgUploadField("st-fav-img", "Favicon image", f.image_url, 256, 0)}</div>
+    <div style="margin-top:10px"><button class="danger sm" onclick="clearFavicon()">✕ Remove favicon (default logo-তে ফিরে যাও)</button></div>
+  </div>`;
+}
+function clearFavicon() { captureSite(); SITE_DATA.favicon = {}; renderSite(); toast("Favicon সরানো হলো — Save & publish চাপুন"); }
+let FOOTER_MODE = "layout";
+function siteFooterHtml() {
+  if (DOCS_DATA === null) return `<div class="card"><span class="spin"></span> footer + pages লোড হচ্ছে…</div>`;
+  if (FOOTER_MODE === "page" && DOC_IDX !== null) return docEditorHtml(DOCS_DATA[DOC_IDX]);
+  return footerLayoutHtml();
+}
+function ensureDoc(slug, title) {
+  let idx = DOCS_DATA.findIndex(d => d.slug === slug);
+  if (idx === -1) { DOCS_DATA.push({ slug, title: title || slug, subtitle: "", updated: "", visible: true, order: DOCS_DATA.length + 1, blocks: [] }); idx = DOCS_DATA.length - 1; }
+  return idx;
+}
+// Normalise a page slug: strip any pasted scheme+host, a leading /p/, and
+// slashes, so a link like "https://medidoor.com.bd/about" or "/about" always
+// becomes the clean slug "about" (the website looks pages up by this slug).
+function slugify(raw) {
+  return (raw || "").trim().toLowerCase()
+    .replace(/^https?:\/\/[^/]+/, "")
+    .replace(/^\/?(p\/)?/, "")
+    .replace(/[^a-z0-9ঀ-৿]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+function footerLayoutHtml() {
+  const ft = SITE_DATA.footer;
+  const haveSlug = {}; DOCS_DATA.forEach(d => haveSlug[d.slug] = true);
+  const cols = ft.columns.map((c, ci) => `
+    <div class="card fcol" style="margin-bottom:10px;background:var(--panel2)">
+      <div class="row"><input class="fcol-title" value="${esc(c.title || "")}" placeholder="Column title" oninput="captureSite();renderFooterPreview()" style="max-width:280px">
+        <div class="grow"></div><button class="sm" onclick="addPageLink(${ci})">+ page link</button><button class="sm" onclick="addLink(${ci})">+ url link</button><button class="danger sm" onclick="removeColumn(${ci})">✕ column</button></div>
+      <div style="margin-top:8px">${(c.links || []).map((l, li) => {
+        const isPage = (l.href || "").startsWith("/p/");
+        const slug = isPage ? l.href.slice(3) : "";
+        const editBtn = isPage ? `<button class="sm" title="page-এর লেখা/ছবি/রং edit" onclick="editLinkPage(${ci},${li})">✏ page${haveSlug[slug] ? "" : " +"}</button>` : "";
+        return `<div class="row flink" style="margin-bottom:6px">
+          <input class="flink-label" value="${esc(l.label || "")}" placeholder="Label" oninput="captureSite();renderFooterPreview()" style="max-width:190px">
+          <input class="flink-href" value="${esc(l.href || "")}" placeholder="/p/slug বা https://…" oninput="captureSite();renderFooterPreview()">
+          ${editBtn}<button class="danger sm" onclick="removeLink(${ci},${li})">✕</button></div>`;
+      }).join("")}</div>
+    </div>`).join("");
+  const socs = ft.socials.map((s, si) => `<div class="row fsoc" style="margin-bottom:6px">
+    <input class="fsoc-label" value="${esc(s.label || "")}" placeholder="Facebook" oninput="captureSite();renderFooterPreview()" style="max-width:200px">
+    <input class="fsoc-href" value="${esc(s.href || "")}" placeholder="https://…" oninput="captureSite();renderFooterPreview()">
+    <button class="danger sm" onclick="removeSocial(${si})">✕</button></div>`).join("");
+  return `
+    <div class="row" style="margin-bottom:8px"><b>🦶 Footer + Pages</b>
+      <span class="muted small">link গুলো website-এর footer-এ দেখায়; <b>✏ page</b> দিয়ে সেই link-এর পুরো page (লেখা/ছবি/রং/font) edit করুন।</span>
+      <div class="grow"></div><button class="primary sm" onclick="saveFooterAndDocs()">💾 Save & publish</button></div>
+    <div class="grid2" style="margin-bottom:10px">
+      <div><label>Footer about</label><textarea id="st-ft-about" oninput="captureSite();renderFooterPreview()" style="min-height:70px">${esc(ft.about || "")}</textarea></div>
+      <div><label>Copyright</label><input id="st-ft-copy" value="${esc(ft.copyright || "")}" oninput="captureSite();renderFooterPreview()"></div>
+    </div>
+    <div class="row"><b>Footer columns</b><button class="sm" onclick="addColumn()">+ Add column</button></div>
+    <div id="footer-cols" style="margin-top:8px">${cols || `<div class="muted small">কোনো column নেই — Add column চাপুন।</div>`}</div>
+    <div class="row" style="margin-top:10px"><b>Social links</b><button class="sm" onclick="addSocial()">+ Add social</button></div>
+    <div id="footer-socials" style="margin-top:8px">${socs || `<div class="muted small">কোনো social নেই।</div>`}</div>
+    <div class="row" style="margin:16px 0 6px"><b>📄 All pages</b><span class="muted small">(/p/slug — footer-এ না থাকলেও এখানে manage করুন)</span><div class="grow"></div><button class="sm" onclick="addPage()">+ New page</button></div>
+    <div class="tablewrap" style="max-height:240px">${pagesTableHtml()}</div>
+    <div class="row" style="margin:16px 0 6px"><b>🔎 Footer live preview</b></div>
+    <div id="footer-preview">${footerPreviewHtml()}</div>`;
+}
+function pagesTableHtml() {
+  const rows = DOCS_DATA.map((d, i) => `<tr>
+    <td>${esc(d.title || d.slug)}</td><td class="muted small">/p/${esc(d.slug)}</td>
+    <td>${d.visible === false ? '<span class="pill bad">hidden</span>' : '<span class="pill ok">visible</span>'}</td><td>${(d.blocks || []).length}</td>
+    <td><button class="sm" onclick="editDoc(${i})">✏ Edit</button> <button class="sm" onclick="window.open('https://medidoor.com.bd/p/'+encodeURIComponent('${esc(d.slug)}'))">🔗</button> <button class="danger sm" onclick="deleteDoc(${i})">🗑</button></td></tr>`).join("");
+  return `<table><thead><tr><th>Title</th><th>URL</th><th>Visible</th><th>Blocks</th><th>Actions</th></tr></thead><tbody>${rows || `<tr><td colspan="5" class="muted">কোনো page নেই।</td></tr>`}</tbody></table>`;
+}
+function addPageLink(ci) { captureSite(); const n = "new-page-" + (DOCS_DATA.length + 1); SITE_DATA.footer.columns[ci].links.push({ label: "New page", href: "/p/" + n }); ensureDoc(n, "New page"); renderSite(); }
+function editLinkPage(ci, li) {
+  captureSite(); const l = SITE_DATA.footer.columns[ci].links[li]; const href = l.href || "";
+  if (!href.startsWith("/p/")) return toast("এই link একটা page নয় (href /p/slug হতে হবে)", "bad");
+  const slug = href.slice(3).trim(); if (!slug) return toast("slug খালি", "bad");
+  DOC_IDX = ensureDoc(slug, l.label); FOOTER_MODE = "page"; renderSite();
+}
+function addPage() { captureSite(); const n = "new-page-" + (DOCS_DATA.length + 1); DOC_IDX = ensureDoc(n, "New page"); FOOTER_MODE = "page"; renderSite(); }
+function backToFooter() { captureDocEditor(); FOOTER_MODE = "layout"; renderSite(); }
+async function saveFooterAndDocs() {
+  captureSite(); captureDocEditor();
+  try {
+    await api("/api/content/site", { method: "PUT", body: { banner: SITE_DATA.banner, bot: SITE_DATA.bot, admin_support: SITE_DATA.admin_support, favicon: SITE_DATA.favicon || {}, footer: { about: SITE_DATA.footer.about || "", copyright: SITE_DATA.footer.copyright || "", columns: SITE_DATA.footer.columns || [], socials: SITE_DATA.footer.socials || [] }, pharmacy_notice: SITE_DATA.pharmacy_notice || "" } });
+    await api("/api/content/documents", { method: "PUT", body: DOCS_DATA });
+    toast("✅ footer + pages saved & published");
+  } catch (e) { toast(e.message, "bad"); }
+}
+function footerPreviewHtml() {
+  const ft = SITE_DATA.footer;
+  const cols = ft.columns.map(c => `<div style="min-width:140px"><div style="font-weight:700;margin-bottom:6px">${esc(c.title || "")}</div>${(c.links || []).map(l => `<div class="muted small" style="margin-bottom:3px">${esc(l.label || "")}</div>`).join("")}</div>`).join("");
+  const socs = ft.socials.map(s => `<span class="pill" style="margin-right:6px">${esc(s.label || "")}</span>`).join("");
+  return `<div style="background:#0a1322;border:1px solid var(--line);border-radius:12px;padding:18px">
+    <div style="display:flex;gap:26px;flex-wrap:wrap">
+      <div style="flex:1;min-width:200px"><div style="font-weight:800;margin-bottom:6px">Medi<span style="color:var(--brand2)">Door</span></div><div class="muted small">${esc(ft.about || "")}</div><div style="margin-top:10px">${socs}</div></div>
+      ${cols}
+    </div>
+    <div class="muted small" style="border-top:1px solid var(--line);margin-top:16px;padding-top:10px">${esc(ft.copyright || "")}</div>
+  </div>`;
+}
+function renderFooterPreview() { const el = document.getElementById("footer-preview"); if (el) el.innerHTML = footerPreviewHtml(); }
+function addColumn() { captureSite(); SITE_DATA.footer.columns.push({ title: "New column", links: [] }); renderSite(); }
+function removeColumn(ci) { captureSite(); SITE_DATA.footer.columns.splice(ci, 1); renderSite(); }
+function addLink(ci) { captureSite(); SITE_DATA.footer.columns[ci].links.push({ label: "", href: "" }); renderSite(); }
+function removeLink(ci, li) { captureSite(); SITE_DATA.footer.columns[ci].links.splice(li, 1); renderSite(); }
+function addSocial() { captureSite(); SITE_DATA.footer.socials.push({ label: "", href: "" }); renderSite(); }
+function removeSocial(si) { captureSite(); SITE_DATA.footer.socials.splice(si, 1); renderSite(); }
+function captureSite() {
+  if (!SITE_DATA) return;
+  const v = id => { const el = document.getElementById(id); return el ? el.value : undefined; };
+  const set = (obj, id, key) => { const val = v(id); if (val !== undefined) obj[key] = val; };
+  set(SITE_DATA.banner, "st-b-img", "image_url"); set(SITE_DATA.banner, "st-b-imgm", "image_url_mobile"); set(SITE_DATA.banner, "st-b-eye", "eyebrow"); set(SITE_DATA.banner, "st-b-tt", "title_top"); set(SITE_DATA.banner, "st-b-th", "title_highlight"); set(SITE_DATA.banner, "st-b-sub", "subtitle");
+  set(SITE_DATA.bot, "st-bot-name", "name"); set(SITE_DATA.bot, "st-bot-tag", "tagline"); set(SITE_DATA.bot, "st-bot-av", "avatar_url");
+  set(SITE_DATA.admin_support, "st-sup-name", "name"); set(SITE_DATA.admin_support, "st-sup-tag", "tagline"); set(SITE_DATA.admin_support, "st-sup-av", "avatar_url");
+  SITE_DATA.favicon = SITE_DATA.favicon || {}; set(SITE_DATA.favicon, "st-fav-img", "image_url");
+  if (v("st-pn") !== undefined) SITE_DATA.pharmacy_notice = v("st-pn");
+  const fa = v("st-ft-about"), fc = v("st-ft-copy");
+  if (fa !== undefined) SITE_DATA.footer.about = fa;
+  if (fc !== undefined) SITE_DATA.footer.copyright = fc;
+  if (document.getElementById("footer-cols")) {
+    SITE_DATA.footer.columns = [...document.querySelectorAll("#footer-cols .fcol")].map(col => ({
+      title: col.querySelector(".fcol-title").value,
+      links: [...col.querySelectorAll(".flink")].map(r => ({ label: r.querySelector(".flink-label").value, href: r.querySelector(".flink-href").value })),
+    }));
+  }
+  if (document.getElementById("footer-socials")) {
+    SITE_DATA.footer.socials = [...document.querySelectorAll("#footer-socials .fsoc")].map(s => ({ label: s.querySelector(".fsoc-label").value, href: s.querySelector(".fsoc-href").value }));
+  }
+}
+async function saveSiteAll() {
+  captureSite();
+  const body = {
+    banner: SITE_DATA.banner, bot: SITE_DATA.bot, admin_support: SITE_DATA.admin_support,
+    favicon: SITE_DATA.favicon || {},
+    footer: { about: SITE_DATA.footer.about || "", copyright: SITE_DATA.footer.copyright || "", columns: SITE_DATA.footer.columns || [], socials: SITE_DATA.footer.socials || [] },
+    pharmacy_notice: SITE_DATA.pharmacy_notice || "",
+  };
+  try { await api("/api/content/site", { method: "PUT", body }); toast("✅ Site saved & published"); } catch (e) { toast(e.message, "bad"); }
+}
+
+/* ---- drag & drop image upload + client-side resize ---- */
+function imgPreviewTag(u, round) { return `<img src="${u}" onerror="imgErr(this)" style="${round ? "width:72px;height:72px;border-radius:50%" : "max-width:100%;max-height:180px;border-radius:10px"};border:1px solid var(--line);object-fit:cover">`; }
+function imgPreview(id, round) { const el = document.getElementById(id + "-prev"); if (!el) return; const v = document.getElementById(id).value; el.innerHTML = v ? imgPreviewTag(esc(fullUrl(v)), round) : ""; }
+function imgUploadField(id, label, val, maxDim, round) {
+  return `<div>
+    <label>${label}</label>
+    <div class="dropzone" id="${id}-dz" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="imgDrop(event,'${id}',${maxDim})" onclick="document.getElementById('${id}-file').click()">
+      <div class="muted small">📂 ছবি drag করুন বা click করে select করুন<br>(auto-resize → max ${maxDim}px)</div>
+    </div>
+    <input type="file" accept="image/png,image/jpeg,image/webp" id="${id}-file" style="display:none" onchange="if(this.files[0])uploadImage(this.files[0],'${id}',${maxDim})">
+    <input id="${id}" value="${esc(val || "")}" placeholder="https://… (অথবা উপরে upload)" oninput="captureSite();imgPreview('${id}',${round ? 1 : 0})" style="margin-top:6px">
+    <div id="${id}-prev" style="margin-top:6px">${val ? imgPreviewTag(esc(fullUrl(val)), round) : ""}</div>
+  </div>`;
+}
+function imgDrop(ev, id, maxDim) { ev.preventDefault(); const dz = document.getElementById(id + "-dz"); dz.classList.remove("drag"); const f = ev.dataTransfer.files && ev.dataTransfer.files[0]; if (f) uploadImage(f, id, maxDim); }
+function resizeImage(file, maxDim) {
+  return new Promise((resolve, reject) => {
+    const img = new Image(); const url = URL.createObjectURL(file);
+    img.onload = () => {
+      let w = img.width, h = img.height; const scale = Math.min(1, maxDim / Math.max(w, h));
+      w = Math.round(w * scale); h = Math.round(h * scale);
+      const c = document.createElement("canvas"); c.width = w; c.height = h;
+      c.getContext("2d").drawImage(img, 0, 0, w, h); URL.revokeObjectURL(url);
+      const type = file.type === "image/png" ? "image/png" : "image/jpeg";
+      c.toBlob(b => b ? resolve(b) : reject(new Error("resize failed")), type, 0.9);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("image read failed")); };
+    img.src = url;
+  });
+}
+async function uploadImage(file, id, maxDim) {
+  const dz = document.getElementById(id + "-dz"); const round = id.endsWith("-av");
+  dz.innerHTML = '<span class="spin"></span> resize + upload হচ্ছে…';
+  try {
+    const blob = await resizeImage(file, maxDim);
+    const fd = new FormData(); fd.append("file", blob, "image." + (blob.type === "image/png" ? "png" : "jpg")); fd.append("kind", "banner");
+    const r = await fetch("/api/upload", { method: "POST", body: fd });
+    if (!r.ok) throw new Error("upload failed HTTP " + r.status);
+    let url = (await r.json()).url || "";
+    if (location.host.endsWith("medidoor.com.bd")) url = url.replace(/^https?:\/\/[^/]+/, "https://api.medidoor.com.bd");
+    document.getElementById(id).value = url; captureSite(); imgPreview(id, round ? 1 : 0);
+    dz.innerHTML = '<div class="muted small">✅ uploaded — আবার drag করলে replace হবে</div>';
+    toast("✅ image uploaded");
+  } catch (e) { dz.innerHTML = `<div class="err" style="display:block">${esc(e.message)}</div>`; toast(e.message, "bad"); }
+}
+
+/* ============================================================ FOOTER DOCUMENTS (CMS) */
+let DOCS_DATA = null, DOC_IDX = null;
+const DOC_FONTS = ["Segoe UI", "Arial", "Georgia", "Times New Roman", "Courier New", "Noto Sans Bengali", "Tahoma", "Verdana"];
+async function loadDocs() {
+  try { DOCS_DATA = await api("/api/content/documents"); } catch (e) { DOCS_DATA = []; toast("documents load failed", "bad"); }
+  if (SITE_SUB === "footer") renderSite();
+}
+function editDoc(i) { captureDocEditor(); DOC_IDX = i; FOOTER_MODE = "page"; renderSite(); }
+async function deleteDoc(i) { if (!await uiConfirm("এই page মুছবেন?", { title: "Delete page", okText: "মুছুন" })) return; DOCS_DATA.splice(i, 1); if (DOC_IDX === i) { DOC_IDX = null; FOOTER_MODE = "layout"; } renderSite(); }
+function docEditorHtml(doc) {
+  const blocks = (doc.blocks || []).map((b, bi) => blockEditorHtml(b, bi)).join("");
+  return `<div class="card">
+    <div class="row"><button class="sm ghost" onclick="backToFooter()">← Footer</button><b>Edit page</b><span class="muted small">/p/${esc(doc.slug || "")}</span><div class="grow"></div><button onclick="window.open('https://medidoor.com.bd/p/'+encodeURIComponent('${esc(doc.slug || "")}'))" class="sm">🔗 live</button><button class="primary sm" onclick="saveFooterAndDocs()">💾 Save & publish</button></div>
+    <div class="grid2" style="margin-top:10px">
+      <div><label>Title</label><input id="doc-title" value="${esc(doc.title || "")}" oninput="captureDocEditor();renderDocPreview()"></div>
+      <div><label>Slug (URL: /p/slug)</label><input id="doc-slug" value="${esc(doc.slug || "")}" oninput="captureDocEditor()"></div>
+      <div><label>Subtitle</label><input id="doc-subtitle" value="${esc(doc.subtitle || "")}" oninput="captureDocEditor();renderDocPreview()"></div>
+      <div><label>Updated (date text)</label><input id="doc-updated" value="${esc(doc.updated || "")}" oninput="captureDocEditor()"></div>
+    </div>
+    <label class="row small" style="margin-top:8px"><input type="checkbox" id="doc-visible" ${doc.visible === false ? "" : "checked"} style="width:auto;margin-right:6px" onchange="captureDocEditor()"> Published (website-এ দেখা যাবে)</label>
+    <div class="row" style="margin:14px 0 6px"><b>Content blocks</b>
+      <button class="sm" onclick="addBlock('heading')">+ Heading</button><button class="sm" onclick="addBlock('text')">+ Text</button>
+      <button class="sm" onclick="addBlock('image')">+ Image</button><button class="sm" onclick="addBlock('divider')">+ Divider</button></div>
+    <div id="doc-blocks">${blocks || `<div class="muted small">কোনো block নেই — উপরে থেকে যোগ করুন (text → image → text এভাবে সাজান)।</div>`}</div>
+    <div class="row" style="margin:14px 0 6px"><b>🔎 Live preview</b></div>
+    <div id="doc-preview" style="background:#fff;color:#111;border-radius:12px;padding:22px">${docPreviewHtml(doc)}</div>
+  </div>`;
+}
+function fontOpts(sel) { return `<option value="" ${!sel ? "selected" : ""}>— default —</option>` + DOC_FONTS.map(f => `<option ${f === sel ? "selected" : ""}>${f}</option>`).join(""); }
+function alignOpts(sel) { return ["left", "center", "right"].map(a => `<option ${a === sel ? "selected" : ""}>${a}</option>`).join(""); }
+function blockEditorHtml(b, bi) {
+  const mv = `<button class="sm" onclick="moveBlock(${bi},-1)">↑</button><button class="sm" onclick="moveBlock(${bi},1)">↓</button><button class="danger sm" onclick="removeBlock(${bi})">✕</button>`;
+  if (b.type === "divider") return `<div class="card dblock" data-type="divider" style="margin-bottom:8px;background:var(--panel2)"><div class="row"><span class="pill">divider</span><div class="grow"></div>${mv}</div></div>`;
+  if (b.type === "image") return `<div class="card dblock" data-type="image" style="margin-bottom:8px;background:var(--panel2)">
+    <div class="row"><span class="pill">image</span><div class="grow"></div>${mv}</div>
+    <div class="dropzone" id="dbimg-${bi}-dz" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="imgDropDoc(event,${bi})" onclick="document.getElementById('dbimg-${bi}-file').click()"><div class="muted small">📂 ছবি drag/click (auto-resize)</div></div>
+    <input type="file" accept="image/png,image/jpeg,image/webp" id="dbimg-${bi}-file" style="display:none" onchange="if(this.files[0])uploadDocImage(this.files[0],${bi})">
+    <input class="db-url" value="${esc(b.url || "")}" placeholder="image URL" oninput="captureDocEditor();renderDocPreview()" style="margin-top:6px">
+    <div class="row" style="margin-top:6px"><div style="width:110px"><label>Width %</label><input class="db-width" type="number" value="${b.width || 100}" oninput="captureDocEditor();renderDocPreview()"></div>
+      <div style="width:130px"><label>Align</label><select class="db-align" onchange="captureDocEditor();renderDocPreview()">${alignOpts(b.align)}</select></div>
+      <div class="grow"><label>Caption</label><input class="db-caption" value="${esc(b.caption || "")}" oninput="captureDocEditor();renderDocPreview()"></div></div></div>`;
+  const useColor = !!(b.color && String(b.color).trim());
+  return `<div class="card dblock" data-type="${b.type}" style="margin-bottom:8px;background:var(--panel2)">
+    <div class="row"><span class="pill">${b.type}</span><div class="grow"></div>${mv}</div>
+    <textarea class="db-text" style="min-height:60px;margin-top:6px" oninput="captureDocEditor();renderDocPreview()">${esc(b.text || "")}</textarea>
+    <div class="row" style="margin-top:6px">
+      <div style="width:150px"><label>Font</label><select class="db-font" onchange="captureDocEditor();renderDocPreview()">${fontOpts(b.font)}</select></div>
+      <div style="width:70px"><label>Size</label><input class="db-size" type="number" value="${b.size || (b.type === "heading" ? 24 : 16)}" oninput="captureDocEditor();renderDocPreview()"></div>
+      <div style="width:150px"><label>Color</label><div class="row" style="gap:5px"><input type="checkbox" class="db-usecolor" ${useColor ? "checked" : ""} title="custom color (না দিলে theme অনুযায়ী)" style="width:auto" onchange="captureDocEditor();renderDocPreview()"><input class="db-color" type="color" value="${b.color || (b.type === "heading" ? "#06ad65" : "#374151")}" oninput="captureDocEditor();renderDocPreview()" style="height:34px;padding:2px;flex:1"></div></div>
+      <div style="width:110px"><label>Align</label><select class="db-align" onchange="captureDocEditor();renderDocPreview()">${alignOpts(b.align)}</select></div>
+      <label class="row small" style="align-self:flex-end"><input type="checkbox" class="db-bold" ${b.bold ? "checked" : ""} style="width:auto;margin-right:6px" onchange="captureDocEditor();renderDocPreview()">Bold</label></div></div>`;
+}
+function addBlock(type) {
+  captureDocEditor(); const doc = DOCS_DATA[DOC_IDX]; doc.blocks = doc.blocks || [];
+  const nb = type === "divider" ? { type } : type === "image" ? { type, url: "", width: 100, align: "center", caption: "" }
+    : { type, text: "", font: "", size: type === "heading" ? 24 : 16, color: type === "heading" ? "#06ad65" : "", align: "left", bold: type === "heading" };
+  doc.blocks.push(nb); renderSite();
+}
+function moveBlock(bi, dir) { captureDocEditor(); const b = DOCS_DATA[DOC_IDX].blocks; const j = bi + dir; if (j < 0 || j >= b.length) return; const t = b[bi]; b[bi] = b[j]; b[j] = t; renderSite(); }
+function removeBlock(bi) { captureDocEditor(); DOCS_DATA[DOC_IDX].blocks.splice(bi, 1); renderSite(); }
+function dq(el, sel) { const x = el.querySelector(sel); return x ? x.value : ""; }
+function captureDocEditor() {
+  if (DOC_IDX === null || !DOCS_DATA || !document.getElementById("doc-blocks")) return;
+  const doc = DOCS_DATA[DOC_IDX];
+  const g = id => { const e = document.getElementById(id); return e ? e.value : undefined; };
+  if (g("doc-title") !== undefined) doc.title = g("doc-title");
+  if (g("doc-slug") !== undefined) doc.slug = slugify(g("doc-slug"));
+  if (g("doc-subtitle") !== undefined) doc.subtitle = g("doc-subtitle");
+  if (g("doc-updated") !== undefined) doc.updated = g("doc-updated");
+  const vis = document.getElementById("doc-visible"); if (vis) doc.visible = vis.checked;
+  doc.blocks = [...document.querySelectorAll("#doc-blocks .dblock")].map(el => {
+    const t = el.dataset.type;
+    if (t === "divider") return { type: "divider" };
+    if (t === "image") return { type: "image", url: dq(el, ".db-url"), width: +dq(el, ".db-width") || 100, align: dq(el, ".db-align"), caption: dq(el, ".db-caption") };
+    const useColor = el.querySelector(".db-usecolor") && el.querySelector(".db-usecolor").checked;
+    return { type: t, text: dq(el, ".db-text"), font: dq(el, ".db-font"), size: +dq(el, ".db-size") || (t === "heading" ? 24 : 16), color: useColor ? dq(el, ".db-color") : "", align: dq(el, ".db-align"), bold: el.querySelector(".db-bold") ? el.querySelector(".db-bold").checked : false };
+  });
+}
+function imgDropDoc(ev, bi) { ev.preventDefault(); const dz = document.getElementById(`dbimg-${bi}-dz`); dz.classList.remove("drag"); const f = ev.dataTransfer.files && ev.dataTransfer.files[0]; if (f) uploadDocImage(f, bi); }
+async function uploadDocImage(file, bi) {
+  const dz = document.getElementById(`dbimg-${bi}-dz`); dz.innerHTML = '<span class="spin"></span> upload হচ্ছে…';
+  try {
+    const blob = await resizeImage(file, 1400);
+    const fd = new FormData(); fd.append("file", blob, "img." + (blob.type === "image/png" ? "png" : "jpg")); fd.append("kind", "banner");
+    const r = await fetch("/api/upload", { method: "POST", body: fd }); if (!r.ok) throw new Error("upload HTTP " + r.status);
+    let url = (await r.json()).url || ""; if (location.host.endsWith("medidoor.com.bd")) url = url.replace(/^https?:\/\/[^/]+/, "https://api.medidoor.com.bd");
+    document.querySelectorAll("#doc-blocks .dblock")[bi].querySelector(".db-url").value = url; captureDocEditor(); renderDocPreview();
+    dz.innerHTML = '<div class="muted small">✅ uploaded</div>'; toast("✅ image uploaded");
+  } catch (e) { dz.innerHTML = `<div class="err" style="display:block">${esc(e.message)}</div>`; toast(e.message, "bad"); }
+}
+function docBlockPreview(b) {
+  const st = `color:${b.color || "#111"};font-family:${b.font || "inherit"};${b.size ? "font-size:" + b.size + "px;" : ""}text-align:${b.align || "left"};font-weight:${b.bold ? "700" : "400"}`;
+  if (b.type === "heading") return `<h2 style="${st};margin-top:18px">${esc(b.text || "")}</h2>`;
+  if (b.type === "text") return `<p style="${st};margin-top:10px;white-space:pre-wrap">${esc(b.text || "")}</p>`;
+  if (b.type === "image" && b.url) return `<div style="text-align:${b.align || "center"};margin:16px 0"><img src="${esc(fullUrl(b.url))}" onerror="imgErr(this)" style="width:${b.width || 100}%;border-radius:10px;display:inline-block">${b.caption ? `<div style="font-size:12px;opacity:.6;margin-top:4px">${esc(b.caption)}</div>` : ""}</div>`;
+  if (b.type === "divider") return `<hr style="margin:18px 0;border:none;border-top:1px solid #0002">`;
+  return "";
+}
+function docPreviewHtml(doc) { return `<h1 style="font-size:26px;font-weight:800">${esc(doc.title || "")}</h1>${doc.subtitle ? `<p style="opacity:.8;margin-top:6px">${esc(doc.subtitle)}</p>` : ""}<div>${(doc.blocks || []).map(docBlockPreview).join("")}</div>`; }
+function renderDocPreview() { const el = document.getElementById("doc-preview"); if (el && DOC_IDX !== null) el.innerHTML = docPreviewHtml(DOCS_DATA[DOC_IDX]); }
+
+/* ============================================================ USERS */
+const USERS_CACHE = {};
+async function renderUsers(group) {
+  uspin();
+  try {
+    const rows = await api(`/api/admin/users/${group}?limit=2000`); USERS_CACHE[group] = {};
+    const isCust = group === "customers";
+    const cols = isCust
+      ? [["gmail","Gmail"],["name","Name"],["phone_number","Phone"],["status","Status"],["is_registered","Reg"],["created_at","Created"]]
+      : [["gmail","Gmail"],["pharmacy_name","Pharmacy"],["pharmacy_license_no","License #"],["verification_status","DGDA"],["status","Status"],["is_registered","Reg"],["created_at","Created"]];
+    const body = rows.map(r => {
+      const id = r.account_id || r.id; USERS_CACHE[group][id] = r;
+      const banned = isCust ? r.is_banned : r.is_blocked;
+      const name = isCust ? `${r.first_name || ""} ${r.last_name || ""}`.trim() || "—" : (r.pharmacy_name || "—");
+      const statusPill = banned ? `<span class="pill bad">${isCust ? "banned" : "blocked"}</span>`
+        : (r.has_profile === false ? `<span class="pill warn">incomplete</span>`
+        : (!isCust && r.is_published ? `<span class="pill ok">public</span>` : `<span class="pill">active</span>`));
+      const cells = cols.map(([k]) => {
+        if (k === "name") return `<td>${esc(name)}</td>`;
+        if (k === "status") return `<td>${statusPill}</td>`;
+        if (k === "is_registered") return `<td>${r.is_registered ? "✓" : "✗"}</td>`;
+        if (k === "created_at") return `<td class="small muted">${esc((r.created_at || "").slice(0, 19))}</td>`;
+        if (k === "verification_status") { const v = r.verification_status || "—"; const cl = v === "verified" ? "ok" : (["expired","mismatch","not_found"].includes(v) ? "bad" : "warn"); return `<td><span class="pill ${cl}">${esc(v)}</span></td>`; }
+        return `<td>${esc(r[k] || "—")}</td>`;
+      }).join("");
+      return `<tr onclick="userDetail('${group}','${id}')" style="cursor:pointer">${cells}</tr>`;
+    }).join("");
+    const regCount = rows.filter(x => x.is_registered).length;
+    $("#users-body").innerHTML = `<div class="card">
+        <div class="row"><h3 style="margin:0">${isCust ? "Customers" : "Pharmacies"}</h3><span class="pill">মোট ${rows.length} · registered ${regCount}</span>
+          <input placeholder="🔍 search…" style="max-width:260px" oninput="filterTable('utable',this.value)"><div class="grow"></div><button class="sm" onclick="renderUsers('${group}')">🔄</button></div>
+        <div class="tablewrap" style="margin-top:12px"><table id="utable"><thead><tr>${cols.map(c => `<th>${c[1]}</th>`).join("")}</tr></thead><tbody>${body}</tbody></table></div>
+        <div class="muted small" style="margin-top:8px">row-এ click করলে details + actions।</div></div>`;
+  } catch (e) { uview(errCard(e)); }
+}
+/* ---- rich detail helpers (shared by customers / pharmacies / riders) ---- */
+function fmtVal(v) { return esc(v == null || v === "" ? "—" : (typeof v === "object" ? JSON.stringify(v) : v)); }
+function imgErr(el) { el.replaceWith(Object.assign(document.createElement("div"), { className: "muted small", textContent: "image load failed" })); }
+function imgThumb(url, label) { const u = esc(fullUrl(url)); return `<div style="text-align:center;margin-bottom:10px"><a href="${u}" target="_blank"><img src="${u}" referrerpolicy="no-referrer" onerror="imgErr(this)" style="max-width:200px;max-height:170px;border-radius:10px;border:1px solid var(--line);object-fit:cover"></a><div class="muted small">${esc(label)}</div></div>`; }
+function kvCard(title, entries) { return `<div class="card" style="margin-bottom:10px"><b>${esc(title)}</b><div class="kv" style="margin-top:8px">${entries.map(([k, v]) => `<div class="k">${esc(k)}</div><div class="v">${v}</div>`).join("")}</div></div>`; }
+function acctCard(r, roleLabel) { return kvCard("Account (login info)", [["id", fmtVal(r.account_id || r.id)], ["gmail", fmtVal(r.gmail)], ["role", roleLabel], ["is_active", r.is_active ? "✓ true" : "✗ false"], ["is_registered", r.is_registered ? "✓ yes" : "✗ no"], ["has_profile", r.has_profile === false ? "✗ no" : "✓ yes"], ["created_at", fmtVal((r.created_at || "").slice(0, 19))]]); }
+function profileCard(r, title) { const skip = new Set(["account_id", "id", "gmail", "google_sub", "role", "is_active", "is_registered", "has_profile", "created_at", "updated_at"]); const entries = Object.entries(r).filter(([k]) => !skip.has(k) && !/_url$/.test(k)).map(([k, v]) => [k, fmtVal(v)]); return entries.length ? kvCard(title, entries) : ""; }
+function badgeBig(text) { return `<div style="text-align:center;margin-top:12px"><span class="pill bad badgebig">${text}</span></div>`; }
+function detailLayout(left, right) { return `<div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap"><div style="flex:1;min-width:300px">${left}</div><div style="width:230px;min-width:200px"><div class="card"><b>Media & status</b><div style="margin-top:10px">${right}</div></div></div></div>`; }
+
+function userDetail(group, id) {
+  const r = USERS_CACHE[group][id]; const isCust = group === "customers"; const banned = isCust ? r.is_banned : r.is_blocked;
+  const left = acctCard(r, group.slice(0, -1)) + profileCard(r, isCust ? "Customer profile" : "Pharmacy profile");
+  let right = "";
+  if (isCust) {
+    right += r.profile_photo_url ? imgThumb(r.profile_photo_url, "Profile picture") : `<div class="muted small" style="text-align:center;margin-bottom:8px">No profile picture</div>`;
+    if (banned) right += badgeBig("BANNED");
+  } else {
+    right += r.banner_photo_url ? imgThumb(r.banner_photo_url, "Banner") : `<div class="muted small" style="text-align:center;margin-bottom:8px">No banner</div>`;
+    if (r.pharmacy_license_doc_url) right += `<button class="sm" style="width:100%;margin-bottom:8px" onclick="window.open('${esc(fullUrl(r.pharmacy_license_doc_url))}')">📄 License document</button>`;
+    right += `<div class="muted small" style="text-align:center">DGDA: <b>${esc(r.verification_status || "pending")}</b><br>Published: ${r.is_published ? "yes" : "no"}</div>`;
+    if (banned) right += badgeBig("BLOCKED");
+  }
+  const banBtn = isCust
+    ? (banned ? `<button class="warn" onclick="userAction('${group}','${id}','unban')">✅ Unban</button>` : `<button class="danger" onclick="userAction('${group}','${id}','ban')">⛔ Ban</button>`)
+    : (banned ? `<button class="warn" onclick="userAction('${group}','${id}','unblock')">✅ Unblock</button>` : `<button class="danger" onclick="userAction('${group}','${id}','block')">⛔ Block</button>`);
+  modal(`<h3><span>${esc(r.gmail)} <span class="pill">${group.slice(0, -1)}</span>${banned ? `<span class="pill bad">${isCust ? "banned" : "blocked"}</span>` : ""}</span><button class="sm ghost" onclick="closeModal()">✕</button></h3>
+    <div class="body">
+      <div class="row" style="margin-bottom:14px"><button class="primary" onclick="openThread('${group}','${id}')">💬 Message thread</button>${banBtn}</div>
+      ${detailLayout(left, right)}
+    </div>`);
+}
+async function userAction(group, id, action) {
+  const r = USERS_CACHE[group][id]; let body = null;
+  if (action === "ban" || action === "block") { const notice = await uiPrompt(`${action} notice (user-কে দেখানো হবে):`, { title: `⛔ ${action}`, required: true, okText: action }); if (notice == null) return; body = { notice: notice.trim() }; }
+  else { if (!await uiConfirm(`${r.gmail} — ${action} confirm করবেন?`, { title: `${action} confirm`, okText: action })) return; }
+  try { await api(`/api/admin/users/${group}/${id}/${action}`, { method: "POST", body }); toast(`✅ ${action} done`); closeModal(); renderUsers(group); } catch (e) { toast(e.message, "bad"); }
+}
+async function openThread(group, id) {
+  modal(`<h3><span>💬 Thread</span><button class="sm ghost" onclick="closeModal()">✕</button></h3>
+    <div class="body"><div id="thread" class="thread"><span class="spin"></span></div>
+    <div class="row" style="margin-top:12px"><textarea id="tmsg" placeholder="Reply লিখুন…" style="min-height:60px"></textarea>
+    <button class="primary" onclick="sendThread('${group}','${id}')">Send</button></div></div>`);
+  await loadThread(group, id);
+}
+async function loadThread(group, id) {
+  try {
+    const d = await api(`/api/admin/users/${group}/${id}/thread`); const items = d.items || [];
+    $("#thread").innerHTML = items.length ? items.map(m => { const out = (m.direction || "").startsWith("admin"); return `<div class="msg ${out ? "out" : "in"}">${esc(m.body)}${m.attachment_url ? `<br><a href="${esc(fullUrl(m.attachment_url))}" target="_blank">📎 attachment</a>` : ""}<div class="t">${esc((m.created_at || "").slice(0, 19))}</div></div>`; }).join("") : '<div class="muted">কোনো message নেই।</div>';
+    const t = $("#thread"); t.scrollTop = t.scrollHeight;
+  } catch (e) { $("#thread").innerHTML = errCard(e); }
+}
+async function sendThread(group, id) { const body = $("#tmsg").value.trim(); if (!body) return; try { await api(`/api/admin/users/${group}/${id}/thread`, { method: "POST", body: { body } }); $("#tmsg").value = ""; await loadThread(group, id); } catch (e) { toast(e.message, "bad"); } }
+
+/* ============================================================ RIDERS */
+let RIDER_STATUS = "pending"; const RIDER_CACHE = {};
+async function renderRiders() {
+  uspin();
+  try {
+    const rows = await api(`/api/admin/users/riders?status_filter=${RIDER_STATUS}&limit=2000`); rows.forEach(r => RIDER_CACHE[r.account_id || r.id] = r);
+    const sb = (v, l) => `<button class="sub-tab ${RIDER_STATUS === v ? "active" : ""}" onclick="RIDER_STATUS='${v}';renderRiders()">${l}</button>`;
+    const body = rows.map(r => { const id = r.account_id || r.id; const v = r.verification_status || "pending"; const cl = v === "verified" ? "ok" : (v === "rejected" ? "bad" : "warn"); const doc = r.nid_number ? "NID" : (r.birth_certificate_url ? "Birth+ID" : "—");
+      return `<tr onclick="riderDetail('${id}')" style="cursor:pointer"><td>${esc(r.gmail)}</td><td>${esc(r.full_name || "—")}</td><td>${esc(r.nick_name || "—")}</td><td>${esc(r.phone_number || "—")}</td><td>${esc(r.age ?? "—")}</td><td>${doc}</td><td><span class="pill ${cl}">${esc(v)}</span></td><td class="small muted">${esc((r.created_at || "").slice(0, 19))}</td></tr>`; }).join("");
+    $("#users-body").innerHTML = `<div class="sub-tabs">${sb("pending","🟡 Pending")}${sb("verified","✅ Verified")}${sb("rejected","⛔ Rejected")}${sb("all","📋 All")}</div>
+      <div class="card"><div class="row"><h3 style="margin:0">Riders</h3><span class="pill">${rows.length}</span>
+          <input placeholder="🔍 search…" style="max-width:260px" oninput="filterTable('rtable',this.value)"><div class="grow"></div><button class="sm" onclick="renderRiders()">🔄</button></div>
+        <div class="tablewrap" style="margin-top:12px"><table id="rtable"><thead><tr><th>Gmail</th><th>Name</th><th>Nick</th><th>WhatsApp</th><th>Age</th><th>Doc</th><th>Status</th><th>Created</th></tr></thead><tbody>${body}</tbody></table></div></div>`;
+  } catch (e) { uview(errCard(e)); }
+}
+function riderDetail(id) {
+  const r = RIDER_CACHE[id]; const v = r.verification_status || "pending";
+  const left = acctCard(r, "rider") + profileCard(r, "Rider profile");
+  const docs = [["nid_front_url", "NID front"], ["nid_back_url", "NID back"], ["birth_certificate_url", "Birth certificate"], ["student_id_card_url", "Student ID"], ["profile_photo_url", "Profile photo"]].filter(([k]) => r[k]);
+  const cl = v === "verified" ? "ok" : (v === "rejected" ? "bad" : "warn");
+  let right = docs.length ? docs.map(([k, l]) => imgThumb(r[k], l)).join("") : `<div class="muted small" style="text-align:center;margin-bottom:8px">কোনো document নেই</div>`;
+  right += `<div style="text-align:center;margin-top:8px"><span class="pill ${cl}">${esc(v)}</span></div>`;
+  modal(`<h3><span>🚴 ${esc(r.gmail)} <span class="pill ${cl}">${esc(v)}</span></span><button class="sm ghost" onclick="closeModal()">✕</button></h3>
+    <div class="body">
+      <div class="row" style="margin-bottom:14px"><button class="primary" onclick="riderAction('${id}','verify')">✅ Verify</button><button class="danger" onclick="riderAction('${id}','reject')">⛔ Reject</button><button onclick="openThread('riders','${id}')">💬 Message</button></div>
+      ${detailLayout(left, right)}
+    </div>`);
+}
+async function riderAction(id, action) {
+  let body = {};
+  if (action === "reject") {
+    const note = await uiPrompt("Reject reason (rider-কে দেখানো হবে):", { title: "⛔ Rider reject", required: true, okText: "Reject" });
+    if (note == null) return;
+    body = { note: note.trim() };
+  } else {
+    const ok = await uiConfirm("এই rider-কে verify করবেন? Verify হলে সে online হয়ে delivery নিতে পারবে।", { title: "✅ Rider verify", okText: "Verify", danger: false });
+    if (!ok) return;
+    const note = await uiPrompt("Optional verify note (rider-কে দেখানো হবে):", { title: "✅ Rider verify", okText: "Save & verify" });
+    if (note == null) return;
+    body = { note: note.trim() };
+  }
+  try { await api(`/api/admin/users/riders/${id}/${action}`, { method: "POST", body }); toast(`✅ ${action} done`); closeModal(); renderRiders(); } catch (e) { toast(e.message, "bad"); }
+}
+
+/* ============================================================ ORDERS */
+let ORDER_STATUS = "", ORDER_Q = "", ORDER_FLAGGED = false;
+let ORDER_DETAIL = null, OD_TAB = "details", OD_CHAT = null;
+function fmt(v) { return v == null ? "—" : (typeof v === "string" && v.length > 19 && /\d{4}-\d\d-\d\d/.test(v) ? v.slice(0, 19) : v); }
+async function renderOrders() {
+  spinner();
+  try {
+    const p = new URLSearchParams();
+    if (ORDER_STATUS) p.set("status", ORDER_STATUS);
+    if (ORDER_Q) p.set("q", ORDER_Q);
+    if (ORDER_FLAGGED) p.set("only_flagged", "true");
+    p.set("limit", "300");
+    const data = await api(`/api/admin/orders?${p}`);
+    const rows = data.orders || data.items || (Array.isArray(data) ? data : []);
+    const opt = ["", "placed", "accepted", "preparing", "ready", "out_for_delivery", "delivered", "cancelled"].map(s => `<option value="${s}" ${s === ORDER_STATUS ? "selected" : ""}>${s || "all statuses"}</option>`).join("");
+    const body = rows.map(o => {
+      const flag = o.conversation_blocked ? `<span class="pill bad">blocked</span>` : (o.flag_count ? `<span class="pill warn">${o.flag_count}⚑</span>` : "");
+      return `<tr onclick="orderDetail('${o.id}')" style="cursor:pointer">
+        <td><span class="pill">${esc(o.status)}</span></td><td>${esc(o.pharmacy_name || "—")}</td>
+        <td>${esc(o.customer_name || "—")}</td><td>${esc(o.customer_phone || "—")}</td>
+        <td>${esc(o.items_count)}</td><td>৳${esc(o.total)}</td><td>${flag}</td>
+        <td class="small muted">${esc((o.updated_at || "").slice(0, 19))}</td></tr>`;
+    }).join("");
+    $("#view").innerHTML = `<div class="card">
+      <div class="row"><h3 style="margin:0">Orders</h3>
+        <select style="max-width:170px" onchange="ORDER_STATUS=this.value;renderOrders()">${opt}</select>
+        <input placeholder="🔍 customer name/phone… (Enter)" style="max-width:240px" value="${esc(ORDER_Q)}" onkeydown="if(event.key==='Enter'){ORDER_Q=this.value.trim();renderOrders()}">
+        <label class="row small"><input type="checkbox" style="width:auto;margin-right:6px" ${ORDER_FLAGGED ? "checked" : ""} onchange="ORDER_FLAGGED=this.checked;renderOrders()"> flagged only</label>
+        <span class="pill">total ${data.total ?? rows.length}</span><div class="grow"></div><button class="sm" onclick="renderOrders()">🔄</button></div>
+      <div class="tablewrap" style="margin-top:12px"><table><thead><tr><th>Status</th><th>Pharmacy</th><th>Customer</th><th>Phone</th><th>Items</th><th>Total</th><th>Flags</th><th>Updated</th></tr></thead>
+      <tbody>${body || `<tr><td>কোনো order নেই</td></tr>`}</tbody></table></div></div>`;
+  } catch (e) { $("#view").innerHTML = errCard(e); }
+}
+async function orderDetail(id) {
+  OD_TAB = "details"; OD_CHAT = null;
+  modal(`<h3><span>📦 Order</span><button class="sm ghost" onclick="closeModal()">✕</button></h3><div class="body"><span class="spin"></span></div>`);
+  try { ORDER_DETAIL = await api(`/api/admin/orders/${id}`); renderOrderModal(); }
+  catch (e) { $("#modal .body").innerHTML = errCard(e); }
+}
+function renderOrderModal() {
+  const d = ORDER_DETAIL, id = d.id;
+  const presc = d.prescription_url ? `<button onclick="window.open('${esc(fullUrl(d.prescription_url))}')">📄 Prescription</button>` : "";
+  const tabBtn = (k, l) => `<button class="sub-tab ${OD_TAB === k ? "active" : ""}" onclick="OD_TAB='${k}';renderOrderModal()">${l}</button>`;
+  const inner = OD_TAB === "details" ? orderDetailsHtml(d) : OD_TAB === "chat" ? orderChatHtml(d) : OD_TAB === "events" ? orderEventsHtml(d) : orderOffersHtml(d);
+  $("#modal .body").innerHTML = `
+    <div class="row" style="margin-bottom:12px">
+      <span class="pill ${d.status === 'cancelled' ? 'bad' : 'ok'}">${esc(d.status)}</span>
+      <button class="danger" onclick="orderAction('${id}','cancel')">✖ Force cancel</button>
+      <button class="warn" onclick="orderAction('${id}','reassign-rider')">🔁 Reassign rider</button>
+      <button onclick="editOrder()">✏ Edit</button>
+      <button class="danger" onclick="orderAction('${id}','purge')">🗑 Purge order</button>
+      ${presc}
+      <button class="sm ghost" onclick="navigator.clipboard.writeText('${id}');toast('Order ID copied')">⧉ Copy ID</button>
+    </div>
+    <div class="sub-tabs">${tabBtn("details", "📋 Details")}${tabBtn("chat", "💬 3-party chat")}${tabBtn("events", "📜 Events")}${tabBtn("offers", "🛵 Offers")}</div>
+    <div id="od-body">${inner}</div>`;
+  if (OD_TAB === "chat" && OD_CHAT === null && d.conversation) loadOrderChat();
+}
+function orderDetailsHtml(d) {
+  const sec = (title, obj) => obj ? `<div class="card" style="margin-bottom:10px"><b>${title}</b><div class="kv" style="margin-top:6px">${Object.entries(obj).map(([k, v]) => `<div class="k">${esc(k)}</div><div class="v">${esc(v == null ? "—" : (typeof v === "object" ? JSON.stringify(v) : v))}</div>`).join("")}</div></div>` : "";
+  const items = (d.items || []).map(i => `<tr><td>${esc(i.name || i.title || "—")}</td><td>${esc(i.qty || i.quantity || "")}</td><td>৳${esc(i.price ?? "")}</td></tr>`).join("");
+  return `${sec("Pharmacy", d.pharmacy)}${sec("Customer", d.customer)}${sec("Rider", d.rider)}
+    <div class="card"><b>Items</b><table style="margin-top:6px"><thead><tr><th>Name</th><th>Qty</th><th>Price</th></tr></thead><tbody>${items || `<tr><td>—</td></tr>`}</tbody></table>
+    <div class="row" style="margin-top:8px"><span class="pill">subtotal ৳${esc(d.subtotal)}</span><span class="pill">delivery ৳${esc(d.delivery_fee)}</span><span class="pill ok">total ৳${esc(d.total)}</span></div>
+    ${d.note ? `<div class="muted small" style="margin-top:6px">note: ${esc(d.note)}</div>` : ""}</div>`;
+}
+function orderChatHtml(d) {
+  if (!d.conversation) return `<div class="muted">এই order-এ কোনো conversation নেই।</div>`;
+  if (OD_CHAT === null) return `<span class="spin"></span> chat লোড হচ্ছে…`;
+  const conv = OD_CHAT.conversation || {};
+  const msgs = (OD_CHAT.messages || []).map(m => `<div class="msg in" style="max-width:94%">
+      <div class="small muted">${esc(m.sender_role)} · ${esc((m.created_at || "").slice(0, 19))} ${m.was_blocked ? '<span class="pill bad">blocked</span>' : ''}</div>
+      ${esc(m.body)}${m.attachment_url ? `<br><a href="${esc(fullUrl(m.attachment_url))}" target="_blank">📎 attachment</a>` : ""}
+      <div><button class="danger sm" style="margin-top:4px" onclick="delChatMsg('${conv.id}','${m.id}')">🗑 delete</button></div></div>`).join("");
+  return `<div class="row" style="margin-bottom:8px">${conv.blocked_at ? `<span class="pill bad">conversation blocked</span>` : `<span class="pill ok">open</span>`}<span class="pill">flags ${conv.flag_count || 0}</span><div class="grow"></div><button class="danger sm" onclick="purgeConv('${conv.id}')">🗑 Purge conversation</button></div>
+    <div class="thread" style="max-height:44vh">${msgs || `<div class="muted">কোনো message নেই।</div>`}</div>`;
+}
+function orderEventsHtml(d) {
+  const ev = (d.order_messages || []).map(m => `<tr><td>${esc(m.sender_role)}</td><td>${esc(m.body || m.preset_key || "—")}</td><td class="small muted">${esc((m.created_at || "").slice(0, 19))}</td></tr>`).join("");
+  return `<table><thead><tr><th>Role</th><th>Event</th><th>At</th></tr></thead><tbody>${ev || `<tr><td>কোনো event নেই</td></tr>`}</tbody></table>`;
+}
+function orderOffersHtml(d) {
+  const of = (d.rider_offers || []).map(o => `<tr><td>${esc(o.rider_name || "—")}</td><td>${esc(o.rider_phone || "—")}</td><td>৳${esc(o.payout_amount ?? "")}</td><td>${esc(o.distance_km ?? "")} km</td><td><span class="pill">${esc(o.status)}</span></td><td class="small muted">${esc((o.offered_at || "").slice(0, 19))}</td></tr>`).join("");
+  return `<table><thead><tr><th>Rider</th><th>Phone</th><th>Payout</th><th>Distance</th><th>Status</th><th>Offered</th></tr></thead><tbody>${of || `<tr><td>কোনো offer নেই</td></tr>`}</tbody></table>`;
+}
+async function loadOrderChat() {
+  try { OD_CHAT = await api(`/api/admin/conversations/${ORDER_DETAIL.conversation.id}/messages`); if (OD_TAB === "chat") renderOrderModal(); }
+  catch (e) { OD_CHAT = { messages: [], conversation: {} }; if (OD_TAB === "chat") $("#od-body").innerHTML = errCard(e); }
+}
+async function delChatMsg(conv, mid) {
+  const reason = await uiPrompt("Delete reason:", { title: "Delete message", defaultValue: "admin moderation" }); if (reason == null) return;
+  try { await api(`/api/admin/conversations/${conv}/messages/${mid}?reason=${encodeURIComponent(reason || "")}`, { method: "DELETE" }); toast("✅ message deleted"); OD_CHAT = null; loadOrderChat(); }
+  catch (e) { toast(e.message, "bad"); }
+}
+async function purgeConv(conv) {
+  if (!await uiConfirm("পুরো conversation চিরতরে purge করবেন? এটা ফেরানো যাবে না।", { title: "Purge conversation", okText: "Purge" })) return;
+  const reason = await uiPrompt("Purge reason:", { title: "Purge conversation", defaultValue: "admin purge" }); if (reason == null) return;
+  try { await api(`/api/admin/conversations/${conv}/purge`, { method: "POST", body: { reason: reason.trim() || "admin purge" } }); toast("✅ conversation purged"); closeModal(); renderOrders(); }
+  catch (e) { toast(e.message, "bad"); }
+}
+function editOrder() {
+  const d = ORDER_DETAIL;
+  modal(`<h3><span>✏ Edit order</span><button class="sm ghost" onclick="reopenOrderModal()">✕</button></h3><div class="body">
+    <div class="grid2">
+      <div><label>Subtotal</label><input id="eo-subtotal" value="${esc(d.subtotal ?? "")}"></div>
+      <div><label>Delivery fee</label><input id="eo-delivery" value="${esc(d.delivery_fee ?? "")}"></div>
+      <div><label>Total</label><input id="eo-total" value="${esc(d.total ?? "")}"></div>
+      <div><label>Delivery address</label><input id="eo-address" value="${esc((d.customer && d.customer.address) || "")}"></div>
+    </div>
+    <div class="field"><label>Note</label><input id="eo-note" value="${esc(d.note || "")}"></div>
+    <div class="field"><label>Items (JSON array)</label><textarea id="eo-items" style="min-height:120px;font-family:Consolas,monospace">${esc(JSON.stringify(d.items || [], null, 1))}</textarea></div>
+    <div class="field"><label>Reason (required)</label><input id="eo-reason" placeholder="কেন edit করছেন"></div>
+    <div class="row"><button class="primary" onclick="saveEditOrder('${d.id}')">💾 Save</button><button onclick="reopenOrderModal()">Cancel</button></div>
+  </div>`);
+}
+function reopenOrderModal() { modal(`<h3><span>📦 Order</span><button class="sm ghost" onclick="closeModal()">✕</button></h3><div class="body"></div>`); renderOrderModal(); }
+async function saveEditOrder(id) {
+  const reason = $("#eo-reason").value.trim(); if (!reason) return toast("Reason দরকার", "bad");
+  let items; try { items = JSON.parse($("#eo-items").value); } catch (e) { return toast("Items JSON ভুল: " + e.message, "bad"); }
+  const num = v => v === "" ? null : Number(v);
+  const body = { reason, items, subtotal: num($("#eo-subtotal").value), delivery_fee: num($("#eo-delivery").value), total: num($("#eo-total").value), delivery_address: $("#eo-address").value.trim() || null, note: $("#eo-note").value.trim() || null };
+  try { await api(`/api/admin/orders/${id}`, { method: "PATCH", body }); toast("✅ order updated"); orderDetail(id); }
+  catch (e) { toast(e.message, "bad"); }
+}
+async function orderAction(id, action) {
+  let body = {};
+  if (action === "cancel") { const reason = await uiPrompt("Cancel reason:", { title: "Cancel order", required: true, okText: "Cancel order" }); if (reason == null) return; body = { reason: reason.trim() }; }
+  else if (action === "reassign-rider") { const reason = await uiPrompt("Reassign reason (বর্তমান rider release হয়ে নতুন offer broadcast হবে):", { title: "Reassign rider", required: true, okText: "Reassign" }); if (reason == null) return; body = { reason: reason.trim() }; }
+  else if (action === "purge") { if (!await uiConfirm("Order চিরতরে purge করবেন? এটা ফেরানো যাবে না।", { title: "Purge order", okText: "Purge" })) return; const reason = await uiPrompt("Purge reason:", { title: "Purge order", defaultValue: "admin purge" }); if (reason == null) return; body = { reason: (reason || "admin purge").trim() }; }
+  try { await api(`/api/admin/orders/${id}/${action}`, { method: "POST", body }); toast(`✅ ${action} done`); closeModal(); renderOrders(); } catch (e) { toast(e.message, "bad"); }
+}
+
+/* ============================================================ MODERATION (conversations) */
+let MOD_ONLY_BLOCKED = false, MOD_PROD_FILTER = "queue";
+const MOD_CONV_CACHE = {}, MOD_PROD_CACHE = {};
+async function modStats() { try { return await api("/api/admin/moderation/stats"); } catch (e) { return null; } }
+function statBar(cards) { return `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:12px">${cards.map(([n, l]) => `<div class="stat"><div class="n">${n}</div><div class="l">${l}</div></div>`).join("")}</div>`; }
+async function renderModeration() {
+  $("#view").innerHTML = `<div id="mod-stats"></div><div id="mod-body"><div class="card"><span class="spin"></span> লোড হচ্ছে…</div></div>`;
+  modStats().then(s => { const el = document.getElementById("mod-stats"); if (!s || !el) return; const br = s.messages_by_risk || {}; el.innerHTML = statBar([[s.blocked_conversations ?? 0, "🚫 blocked convos"], [s.flagged_conversations ?? 0, "⚑ flagged convos"], [br.low ?? 0, "low risk"], [br.medium ?? 0, "medium risk"], [br.high ?? 0, "high risk"]]); });
+  try { await renderModChats(); } catch (e) { $("#mod-body").innerHTML = errCard(e); }
+}
+async function renderProducts() {
+  $("#view").innerHTML = `<div id="prod-stats"></div><div id="mod-body"><div class="card"><span class="spin"></span> লোড হচ্ছে…</div></div>`;
+  modStats().then(s => { const el = document.getElementById("prod-stats"); if (!s || !el) return; el.innerHTML = statBar([[s.products_pending ?? 0, "⏳ products pending"], [s.products_rejected ?? 0, "⛔ products rejected"]]); });
+  try { await renderModProducts(); } catch (e) { $("#mod-body").innerHTML = errCard(e); }
+}
+async function _legacyLoadModStats_unused() {
+  return;
+}
+async function renderModChats() {
+  const rows = await api(`/api/admin/moderation/conversations?only_blocked=${MOD_ONLY_BLOCKED ? "true" : "false"}`);
+  rows.forEach(c => MOD_CONV_CACHE[c.id] = c);
+  const body = rows.map(c => {
+    const lm = c.last_flagged_message || {};
+    const reason = lm.moderation_reason || c.block_reason || "—";
+    const cat = lm.moderation_category || c.block_category || "—";
+    const cls = c.blocked_at ? "bad" : (c.flag_count ? "warn" : "");
+    return `<tr onclick="modViewConv('${c.id}')" style="cursor:pointer">
+      <td>${c.blocked_at ? "🔒" : ""}</td><td>${c.flag_count || 0}</td><td>${esc(c.pharmacy_name || "—")}</td><td>${esc(c.customer_name || "—")}</td>
+      <td>${cat === "—" ? "—" : `<span class="pill ${cls}">${esc(cat)}</span>`}</td><td title="${esc(reason)}">${esc((reason || "").slice(0, 80))}</td>
+      <td class="small muted">${esc((c.last_message_at || "").slice(0, 19))}</td>
+      <td>${c.blocked_at ? `<button class="warn sm" onclick="event.stopPropagation();modUnblock('${c.id}')">Unblock</button>` : ""}</td></tr>`;
+  }).join("");
+  $("#mod-body").innerHTML = `<div class="card">
+    <div class="row"><h3 style="margin:0">Conversation moderation</h3><span class="pill">${rows.length}</span>
+      <label class="row small"><input type="checkbox" style="width:auto;margin-right:6px" ${MOD_ONLY_BLOCKED ? "checked" : ""} onchange="MOD_ONLY_BLOCKED=this.checked;renderModeration()"> only currently blocked</label>
+      <input placeholder="🔍 search…" style="max-width:220px" oninput="filterTable('modctable',this.value)"><div class="grow"></div><button class="sm" onclick="renderModeration()">🔄</button></div>
+    <div class="tablewrap" style="margin-top:12px"><table id="modctable"><thead><tr><th>🔒</th><th>Flags</th><th>Pharmacy</th><th>Customer</th><th>Category</th><th>Last reason</th><th>Activity</th><th></th></tr></thead>
+    <tbody>${body || `<tr><td colspan="8" class="muted">কোনো flagged conversation নেই 🎉</td></tr>`}</tbody></table></div>
+    <div class="muted small" style="margin-top:8px">row-এ click → পুরো message history (risk highlight সহ)।</div></div>`;
+}
+async function modViewConv(id) {
+  const c = MOD_CONV_CACHE[id];
+  modal(`<h3><span>💬 ${esc(c.pharmacy_name || "—")} ↔ ${esc(c.customer_name || "—")} ${c.blocked_at ? '<span class="pill bad">blocked</span>' : ''}</span><button class="sm ghost" onclick="closeModal()">✕</button></h3>
+    <div class="body"><div class="row" style="margin-bottom:10px">${c.blocked_at ? `<button class="warn" onclick="modUnblock('${id}')">✅ Unblock conversation</button>` : ''}<span class="pill">flags ${c.flag_count || 0}</span></div>
+    <div id="modmsgs"><span class="spin"></span> messages লোড হচ্ছে…</div></div>`);
+  try {
+    const msgs = await api(`/api/admin/moderation/conversations/${id}/messages`);
+    $("#modmsgs").innerHTML = msgs.length ? `<div class="thread" style="max-height:55vh">${msgs.map(modMsgHtml).join("")}</div>` : '<div class="muted">কোনো message নেই।</div>';
+  } catch (e) { $("#modmsgs").innerHTML = errCard(e); }
+}
+function modMsgHtml(m) {
+  const risk = m.moderation_risk;
+  const bg = risk === "high" ? "background:#3a1620;border-color:#7f1d1d" : risk === "medium" ? "background:#3a2c12" : risk === "low" ? "background:#2c2a14" : "";
+  const out = (m.sender_role || "") === "pharmacy";
+  return `<div class="msg ${out ? "out" : "in"}" style="max-width:92%;${bg}">
+    <div class="small muted">${esc(m.sender_role || "?")} · ${esc((m.created_at || "").slice(0, 19))}${risk ? ` · <span class="pill ${risk === "high" ? "bad" : "warn"}">⚑${esc(risk)}${m.moderation_category ? "/" + esc(m.moderation_category) : ""}</span>` : ""}${m.was_blocked ? ' · <span class="pill bad">blocked</span>' : ""}${m.reviewed_at ? " · ✓reviewed" : ""}</div>
+    ${esc(m.body || "")}${m.attachment_url ? `<br><a href="${esc(fullUrl(m.attachment_url))}" target="_blank">📎 attachment</a>` : ""}
+    ${m.moderation_reason ? `<div class="small" style="color:#7ef0b0;margin-top:3px">└─ AI: ${esc(m.moderation_reason)}</div>` : ""}
+    ${risk && !m.reviewed_at ? `<div><button class="sm" style="margin-top:4px" onclick="modDismiss('${m.id}',this)">✓ Dismiss flag</button></div>` : ""}</div>`;
+}
+async function modDismiss(mid, btn) { try { await api(`/api/admin/moderation/messages/${mid}/dismiss`, { method: "POST" }); toast("✅ flag dismissed"); if (btn) btn.outerHTML = '<span class="muted small">✓ reviewed</span>'; } catch (e) { toast(e.message, "bad"); } }
+async function modUnblock(id) { const note = await uiPrompt("Unblock note (optional, participants দেখবে):", { title: "Unblock conversation", okText: "Unblock" }); if (note == null) return; try { await api(`/api/admin/moderation/conversations/${id}/unblock`, { method: "POST", body: { note: note.trim() || null } }); toast("✅ unblocked"); closeModal(); renderModeration(); } catch (e) { toast(e.message, "bad"); } }
+
+async function renderModProducts() {
+  const q = MOD_PROD_FILTER && MOD_PROD_FILTER !== "queue" ? `?status_filter=${MOD_PROD_FILTER}` : "";
+  const rows = await api(`/api/admin/moderation/products${q}`);
+  rows.forEach(m => MOD_PROD_CACHE[m.id] = m);
+  const filt = [["queue", "⏳ Queue"], ["pending", "Pending"], ["rejected", "Rejected"], ["approved", "Approved"], ["all", "All"]]
+    .map(([v, l]) => `<button class="sub-tab ${MOD_PROD_FILTER === v ? "active" : ""}" onclick="MOD_PROD_FILTER='${v}';renderProducts()">${l}</button>`).join("");
+  const body = rows.map(m => {
+    const st = m.approval_status || "approved"; const cls = st === "rejected" ? "bad" : st === "pending" ? "warn" : "ok";
+    return `<tr onclick="modViewProduct('${m.id}')" style="cursor:pointer">
+      <td><span class="pill ${cls}">${esc(st)}</span></td><td>${esc((m.pharmacy || {}).name || "—")}</td><td>${esc(m.name || "—")}</td>
+      <td>${esc(m.category || "—")}</td><td>${esc(m.approval_category || "—")}</td><td>৳${esc(m.price ?? "")}</td><td>${m.prescription_required ? "📋" : ""}</td>
+      <td title="${esc(m.approval_reason || "")}">${esc((m.approval_reason || "").slice(0, 70))}</td>
+      <td><button class="primary sm" onclick="event.stopPropagation();modProduct('${m.id}','approve')">✅</button> <button class="danger sm" onclick="event.stopPropagation();modProduct('${m.id}','reject')">⛔</button></td></tr>`;
+  }).join("");
+  $("#mod-body").innerHTML = `<div class="sub-tabs">${filt}</div>
+    <div class="card"><div class="row"><h3 style="margin:0">Product moderation</h3><span class="pill">${rows.length}</span>
+      <input placeholder="🔍 search…" style="max-width:220px" oninput="filterTable('modptable',this.value)"><div class="grow"></div><button class="sm" onclick="renderProducts()">🔄</button></div>
+    <div class="tablewrap" style="margin-top:12px"><table id="modptable"><thead><tr><th>Status</th><th>Pharmacy</th><th>Product</th><th>Pharm cat</th><th>AI cat</th><th>Price</th><th>Rx</th><th>AI reason</th><th>Actions</th></tr></thead>
+    <tbody>${body || `<tr><td colspan="9" class="muted">কোনো product নেই।</td></tr>`}</tbody></table></div>
+    <div class="muted small" style="margin-top:8px">row-এ click → product details + image।</div></div>`;
+}
+function modViewProduct(id) {
+  const m = MOD_PROD_CACHE[id]; const ph = m.pharmacy || {};
+  const st = m.approval_status || "approved"; const cls = st === "rejected" ? "bad" : st === "pending" ? "warn" : "ok";
+  modal(`<h3><span>🧪 ${esc(m.name || "—")} <span class="pill ${cls}">${esc(st)}</span></span><button class="sm ghost" onclick="closeModal()">✕</button></h3>
+    <div class="body"><div class="row" style="margin-bottom:12px"><button class="primary" onclick="modProduct('${id}','approve')">✅ Approve</button><button class="danger" onclick="modProduct('${id}','reject')">⛔ Reject</button></div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap"><div style="flex:1;min-width:280px"><div class="kv">
+        <div class="k">Pharmacy</div><div class="v">${esc(ph.name || "—")}${ph.phone_number ? " · " + esc(ph.phone_number) : ""}</div>
+        <div class="k">Pharmacy category</div><div class="v">${esc(m.category || "—")}</div>
+        <div class="k">Price · Stock</div><div class="v">৳${esc(m.price ?? "")} · ${esc(m.stock ?? "")}</div>
+        <div class="k">Prescription</div><div class="v">${m.prescription_required ? "YES 📋" : "no"}</div>
+        <div class="k">AI status</div><div class="v">${esc(st)}</div>
+        <div class="k">AI category</div><div class="v">${esc(m.approval_category || "—")}</div>
+        <div class="k">AI reason</div><div class="v">${esc(m.approval_reason || "—")}</div>
+        <div class="k">Reviewed by admin</div><div class="v">${m.approval_reviewed_by_admin ? "yes" : "no"}</div>
+        <div class="k">Short desc</div><div class="v">${esc(m.short_description || "—")}</div>
+        <div class="k">Description</div><div class="v">${esc(m.description || "—")}</div>
+      </div></div>
+      <div style="width:220px">${m.image_url ? `<a href="${esc(fullUrl(m.image_url))}" target="_blank"><img src="${esc(fullUrl(m.image_url))}" onerror="imgErr(this)" style="max-width:200px;border-radius:10px;border:1px solid var(--line)"></a>` : '<div class="muted small">No image</div>'}</div>
+    </div></div>`);
+}
+async function modProduct(id, action) {
+  let body = {};
+  if (action === "reject") { const reason = await uiPrompt("Reject reason (pharmacy দেখবে):", { title: "⛔ Reject product", required: true, okText: "Reject" }); if (reason == null) return; body = { note: reason.trim() }; }
+  else { const note = await uiPrompt("Approve note (optional):", { title: "✅ Approve product", okText: "Approve" }); if (note == null) return; body = { note: note.trim() }; }
+  try { await api(`/api/admin/moderation/products/${id}/${action}`, { method: "POST", body }); toast(`✅ ${action}d`); closeModal(); renderProducts(); } catch (e) { toast(e.message, "bad"); }
+}
+
+/* ============================================================ AUDIT LOG */
+let LOG_SUB = "audit"; const AUDIT_CACHE = {};
+async function renderAuditLog() {
+  $("#view").innerHTML = `<div class="sub-tabs">
+      <button class="sub-tab ${LOG_SUB === "audit" ? "active" : ""}" onclick="LOG_SUB='audit';renderAuditLog()">📋 Admin actions</button>
+      <button class="sub-tab ${LOG_SUB === "purge" ? "active" : ""}" onclick="LOG_SUB='purge';renderAuditLog()">🗑 Data purge log</button>
+    </div><div id="log-body"><div class="card"><span class="spin"></span> লোড হচ্ছে…</div></div>`;
+  try { if (LOG_SUB === "audit") await renderAuditEntries(); else await renderPurgeLog(); }
+  catch (e) { $("#log-body").innerHTML = errCard(e); }
+}
+async function renderAuditEntries() {
+  const rows = await api("/api/admin/audit-log?limit=500");
+  rows.forEach(r => AUDIT_CACHE[r.id] = r);
+  const body = rows.map(r => `<tr onclick="auditDetail('${r.id}')" style="cursor:pointer">
+    <td class="small muted">${esc((r.created_at || "").slice(0, 19))}</td>
+    <td>${esc(r.actor_gmail || "—")}</td>
+    <td><span class="pill">${esc(r.action || "—")}</span></td>
+    <td class="small">${esc(r.target_type || "")}${r.target_id ? "/" + esc(String(r.target_id).slice(0, 12)) : ""}</td>
+    <td title="${esc(r.reason || "")}">${esc((r.reason || "").slice(0, 120))}</td></tr>`).join("");
+  $("#log-body").innerHTML = `<div class="card">
+    <div class="row"><h3 style="margin:0">📋 Admin audit log</h3><span class="pill">${rows.length} entries</span>
+      <input placeholder="🔍 filter (actor/action/target/reason)…" style="max-width:300px" oninput="filterTable('audittable',this.value)"><div class="grow"></div><button class="sm" onclick="renderAuditLog()">🔄</button></div>
+    <div class="muted small" style="margin:6px 0">cockpit-এর প্রতিটা admin action এখানে append হয়। row-এ click → full JSON details।</div>
+    <div class="tablewrap" style="margin-top:8px"><table id="audittable"><thead><tr><th>When</th><th>Actor</th><th>Action</th><th>Target</th><th>Reason</th></tr></thead>
+    <tbody>${body || `<tr><td colspan="5" class="muted">এখনো কোনো admin action log হয়নি।</td></tr>`}</tbody></table></div></div>`;
+}
+function auditDetail(id) {
+  const r = AUDIT_CACHE[id];
+  modal(`<h3><span>📋 Audit entry · ${esc(r.action || "")}</span><button class="sm ghost" onclick="closeModal()">✕</button></h3>
+    <div class="body"><div class="kv">
+      <div class="k">When</div><div class="v">${esc((r.created_at || "").slice(0, 19))}</div>
+      <div class="k">Actor</div><div class="v">${esc(r.actor_gmail || "—")}</div>
+      <div class="k">Action</div><div class="v">${esc(r.action || "—")}</div>
+      <div class="k">Target type</div><div class="v">${esc(r.target_type || "—")}</div>
+      <div class="k">Target id</div><div class="v">${esc(r.target_id || "—")}</div>
+      <div class="k">Reason</div><div class="v">${esc(r.reason || "—")}</div>
+    </div>
+    <div class="muted small" style="margin:12px 0 4px">Full details</div>
+    <pre>${esc(JSON.stringify(r.details ?? {}, null, 2))}</pre></div>`);
+}
+async function renderPurgeLog() {
+  const rows = await api("/api/admin/purge-log?limit=200");
+  const body = rows.map(r => `<tr>
+    <td class="small muted">${esc((r.created_at || "").slice(0, 19))}</td><td><span class="pill">${esc(r.kind || "—")}</span></td>
+    <td>${esc(r.actor_gmail || "—")}</td><td>${esc(r.orders_deleted)}</td><td>${esc(r.order_messages_deleted)}</td>
+    <td>${esc(r.conv_messages_deleted)}</td><td>${esc(r.rider_offers_deleted)}</td><td>${esc(r.admin_messages_deleted)}</td>
+    <td>${esc(r.attachments_deleted)}</td><td title="${esc(r.notes || "")}">${esc((r.notes || "").slice(0, 80))}</td></tr>`).join("");
+  $("#log-body").innerHTML = `<div class="card">
+    <div class="row"><h3 style="margin:0">🗑 Data purge log</h3><span class="pill">${rows.length}</span>
+      <span class="muted small">retention sweep + admin purge-এ যা মুছেছে তার record।</span><div class="grow"></div><button class="sm" onclick="renderAuditLog()">🔄</button></div>
+    <div class="tablewrap" style="margin-top:10px"><table id="purgetable"><thead><tr><th>When</th><th>Kind</th><th>Actor</th><th>Orders</th><th>Ord msgs</th><th>Conv msgs</th><th>Offers</th><th>Admin msgs</th><th>Files</th><th>Notes</th></tr></thead>
+    <tbody>${body || `<tr><td colspan="10" class="muted">কোনো purge record নেই।</td></tr>`}</tbody></table></div></div>`;
+}
+function filterTable(tableId, q) { q = q.toLowerCase(); document.querySelectorAll(`#${tableId} tbody tr`).forEach(tr => { tr.style.display = tr.textContent.toLowerCase().includes(q) ? "" : "none"; }); }
+
+/* ============================================================ BOOT */
+async function doLogin() {
+  const btn = $("#lg-btn"); const err = $("#lg-err"); err.style.display = "none";
+  STATE.pw = $("#lg-pw").value;
+  if (!STATE.pw) { err.textContent = "Password দিন।"; err.style.display = "block"; return; }
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span> logging in…';
+  try {
+    STATE.token = null; await login();
+    if ($("#lg-remember").checked) sessionStorage.setItem("md_admin_pw", STATE.pw);
+    $("#login").style.display = "none"; $("#app").style.display = "block";
+    $("#who").textContent = location.host; renderTabs(); render();
+  } catch (e) { err.textContent = e.message || String(e); err.style.display = "block"; }
+  finally { btn.disabled = false; btn.textContent = "Login"; }
+}
+function logout() { sessionStorage.removeItem("md_admin_pw"); STATE.token = null; STATE.pw = ""; $("#app").style.display = "none"; $("#login").style.display = "flex"; $("#lg-pw").value = ""; }
+(function boot() {
+  const saved = sessionStorage.getItem("md_admin_pw");
+  if (saved) { $("#lg-pw").value = saved; $("#lg-remember").checked = true; doLogin(); }
+})();
+</script>
+</body>
+</html>

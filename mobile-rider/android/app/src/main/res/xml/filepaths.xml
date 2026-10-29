@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FileProvider roots shared with the browser. androidbrowserhelper's
+  SplashImageTransferTask writes the splash PNG into files/twa_splash/ and
+  shares it via this provider — if that root is missing, getUriForFile()
+  throws at launch and the app crashes on every modern-Chrome device.
+-->
+<paths>
+    <files-path path="twa_splash/" name="twa_splash" />
+</paths>

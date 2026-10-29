@@ -1,0 +1,167 @@
+[
+  {
+    "slug": "about",
+    "title": "আমাদের সম্পর্কে",
+    "subtitle": "MediDoor — Bangladesh-এর verified pharmacy network, আপনার দরজায় ঔষধ।",
+    "updated": "",
+    "order": 1,
+    "visible": true,
+    "blocks": [
+      { "type": "heading", "text": "আমরা কী করি", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "MediDoor আপনাকে আপনার আশেপাশের DGDA-verified pharmacy-র সাথে যুক্ত করে — কয়েক মুহূর্তে অর্ডার, real-time tracking এবং trusted rider-এর মাধ্যমে দ্রুত হোম ডেলিভারি।", "align": "left" },
+      { "type": "heading", "text": "আমাদের লক্ষ্য", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "নিরাপদ, সঠিক ও সাশ্রয়ী ঔষধ যেন দেশের প্রতিটি ঘরে সহজে পৌঁছায় — এটাই আমাদের লক্ষ্য। প্রতিটি pharmacy আমরা DGDA registry-র সাথে যাচাই করি, যাতে আপনি নিশ্চিন্তে অর্ডার করতে পারেন।", "align": "left" },
+      { "type": "heading", "text": "যোগাযোগ", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "যেকোনো প্রশ্নে আমাদের লিখুন: support@medidoor.com.bd", "align": "left" }
+    ]
+  },
+  {
+    "slug": "careers",
+    "title": "ক্যারিয়ার",
+    "subtitle": "MediDoor-এর সাথে দেশের healthcare বদলে দিন।",
+    "updated": "",
+    "order": 2,
+    "visible": true,
+    "blocks": [
+      { "type": "heading", "text": "আমাদের সাথে কাজ করুন", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "আমরা এমন মানুষ খুঁজছি যারা technology দিয়ে মানুষের জীবন সহজ করতে চান — engineering, operations, pharmacy ও delivery নানা ক্ষেত্রে।", "align": "left" },
+      { "type": "heading", "text": "এই মুহূর্তে খোলা পদ", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "এই মুহূর্তে কোনো পদ খোলা নেই। ভবিষ্যতে সুযোগের জন্য আপনার CV পাঠিয়ে রাখুন: careers@medidoor.com.bd", "align": "left" }
+    ]
+  },
+  {
+    "slug": "press",
+    "title": "প্রেস",
+    "subtitle": "সংবাদমাধ্যমের জন্য তথ্য ও যোগাযোগ।",
+    "updated": "",
+    "order": 3,
+    "visible": true,
+    "blocks": [
+      { "type": "heading", "text": "মিডিয়া অনুসন্ধান", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "সাংবাদিক বা মিডিয়া প্রতিনিধি হলে আমাদের লিখুন: press@medidoor.com.bd — আমরা দ্রুত সাড়া দেওয়ার চেষ্টা করি।", "align": "left" },
+      { "type": "heading", "text": "ব্র্যান্ড অ্যাসেট", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "MediDoor লোগো ও ব্র্যান্ড ব্যবহারের নির্দেশনা প্রয়োজন হলে আমাদের সাথে যোগাযোগ করুন।", "align": "left" }
+    ]
+  },
+  {
+    "slug": "support",
+    "title": "Partner support",
+    "subtitle": "ফার্মেসি ও রাইডার পার্টনারদের জন্য সহায়তা।",
+    "updated": "",
+    "order": 4,
+    "visible": true,
+    "blocks": [
+      { "type": "heading", "text": "ফার্মেসি পার্টনার", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "অ্যাকাউন্ট verification, product আপলোড বা অর্ডার সংক্রান্ত যেকোনো সমস্যায় dashboard-এর “Admin support” thread ব্যবহার করুন, অথবা লিখুন: partners@medidoor.com.bd", "align": "left" },
+      { "type": "heading", "text": "রাইডার পার্টনার", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "Verification, delivery বা earnings সংক্রান্ত সহায়তার জন্য app-এর support thread ব্যবহার করুন, অথবা লিখুন: riders@medidoor.com.bd", "align": "left" }
+    ]
+  },
+  {
+    "slug": "help-orders",
+    "title": "Order সহায়তা",
+    "subtitle": "অর্ডার দেওয়া, ট্র্যাক করা ও পাওয়া নিয়ে সাহায্য।",
+    "updated": "",
+    "order": 5,
+    "visible": true,
+    "blocks": [
+      { "type": "heading", "text": "কীভাবে অর্ডার করবেন", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "১) হোম পেজে আপনার লোকেশন দিন। ২) ঔষধ বা উপসর্গ লিখে খুঁজুন। ৩) pharmacy বেছে নিয়ে cart-এ যোগ করুন। ৪) login করে অর্ডার নিশ্চিত করুন।", "align": "left" },
+      { "type": "heading", "text": "অর্ডার ট্র্যাকিং", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "অর্ডার confirm হলে pharmacy প্রস্তুতি শুরু করে এবং rider যুক্ত হলে আপনি map-এ live tracking দেখতে পারবেন। প্রতিটি ধাপে notification পাবেন।", "align": "left" },
+      { "type": "heading", "text": "Prescription লাগে এমন ঔষধ", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "কিছু ঔষধে prescription বাধ্যতামূলক। অর্ডারের আগে স্পষ্ট prescription ছবি আপলোড করুন, নাহলে অর্ডার নেওয়া হবে না।", "align": "left" },
+      { "type": "heading", "text": "আরও সাহায্য", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "সমস্যা থাকলে লিখুন: support@medidoor.com.bd", "align": "left" }
+    ]
+  },
+  {
+    "slug": "help-refunds",
+    "title": "Refund সহায়তা",
+    "subtitle": "রিফান্ড ও বাতিল সংক্রান্ত তথ্য।",
+    "updated": "",
+    "order": 6,
+    "visible": true,
+    "blocks": [
+      { "type": "heading", "text": "অর্ডার বাতিল", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "pharmacy confirm করার আগ পর্যন্ত আপনি অর্ডার বাতিল করতে পারেন। confirm হওয়ার পর বাতিল করতে চাইলে chat-এ pharmacy-র সাথে কথা বলুন।", "align": "left" },
+      { "type": "heading", "text": "ভুল বা ত্রুটিপূর্ণ পণ্য", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "পণ্যে কোনো সমস্যা (ভুল ঔষধ, মেয়াদ, প্যাকেজিং) থাকলে delivery-র সময়েই rider-কে জানান এবং আমাদের support-এ লিখুন।", "align": "left" },
+      { "type": "heading", "text": "রিফান্ড প্রক্রিয়া", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "অনুমোদিত রিফান্ড আপনার পেমেন্ট মাধ্যমে ফেরত দেওয়া হবে। (অনলাইন পেমেন্ট শীঘ্রই যুক্ত হচ্ছে।) প্রশ্ন থাকলে: support@medidoor.com.bd", "align": "left" }
+    ]
+  },
+  {
+    "slug": "contact",
+    "title": "যোগাযোগ",
+    "subtitle": "আমরা সাহায্য করতে এখানে আছি।",
+    "updated": "",
+    "order": 7,
+    "visible": true,
+    "blocks": [
+      { "type": "heading", "text": "সাধারণ সহায়তা", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "ইমেইল: support@medidoor.com.bd", "align": "left" },
+      { "type": "text", "text": "আমরা সাধারণত ২৪ ঘণ্টার মধ্যে সাড়া দিই।", "align": "left" },
+      { "type": "heading", "text": "পার্টনারশিপ", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "ফার্মেসি বা রাইডার হিসেবে যুক্ত হতে: partners@medidoor.com.bd", "align": "left" }
+    ]
+  },
+  {
+    "slug": "terms",
+    "title": "শর্তাবলি (Terms of Service)",
+    "subtitle": "MediDoor ব্যবহারের শর্তাবলি। সেবা ব্যবহার করলে আপনি এই শর্তগুলো মেনে নিচ্ছেন।",
+    "updated": "২০২৬",
+    "order": 8,
+    "visible": true,
+    "blocks": [
+      { "type": "heading", "text": "১. সেবার পরিধি", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "MediDoor একটি প্ল্যাটফর্ম যা গ্রাহক, verified pharmacy ও rider-কে যুক্ত করে। MediDoor নিজে ঔষধ বিক্রি করে না; pharmacy বিক্রেতা এবং পণ্যের জন্য দায়ী।", "align": "left" },
+      { "type": "heading", "text": "২. অ্যাকাউন্ট", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "একটি Gmail-এ একটি অ্যাকাউন্ট ও একটি role থাকে। সঠিক তথ্য দেওয়া এবং অ্যাকাউন্টের নিরাপত্তা রক্ষা করা আপনার দায়িত্ব।", "align": "left" },
+      { "type": "heading", "text": "৩. Prescription ঔষধ", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "যেসব ঔষধে prescription প্রয়োজন, সেগুলোর জন্য বৈধ prescription আপলোড বাধ্যতামূলক। ভুয়া prescription দিলে অ্যাকাউন্ট বন্ধ করা হতে পারে।", "align": "left" },
+      { "type": "heading", "text": "৪. দায়বদ্ধতা", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "MediDoor যথাসাধ্য সঠিক সেবা দিতে চেষ্টা করে, তবে pharmacy/rider-এর কার্যক্রমজনিত ক্ষতির জন্য আইনের সীমার মধ্যে দায় সীমিত।", "align": "left" },
+      { "type": "heading", "text": "৫. পরিবর্তন", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "এই শর্তাবলি সময়ে সময়ে হালনাগাদ হতে পারে। গুরুত্বপূর্ণ পরিবর্তন আমরা জানাব। প্রশ্ন থাকলে: support@medidoor.com.bd", "align": "left" },
+      { "type": "heading", "text": "দ্রষ্টব্য", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "এটি একটি প্রাথমিক খসড়া। চূড়ান্ত প্রকাশের আগে আইনজীবীর পরামর্শ নিয়ে যাচাই করার পরামর্শ দেওয়া হলো।", "align": "left" }
+    ]
+  },
+  {
+    "slug": "privacy",
+    "title": "গোপনীয়তা নীতি (Privacy Policy)",
+    "subtitle": "আমরা আপনার তথ্য কীভাবে সংগ্রহ, ব্যবহার ও সুরক্ষিত রাখি।",
+    "updated": "২০২৬",
+    "order": 9,
+    "visible": true,
+    "blocks": [
+      { "type": "heading", "text": "১. আমরা কী সংগ্রহ করি", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "নাম, ফোন, ঠিকানা, লোকেশন এবং অর্ডার সংক্রান্ত তথ্য। prescription ও পরিচয়পত্র (যেমন NID) শুধু verification ও সেবার প্রয়োজনে সংগ্রহ করা হয়।", "align": "left" },
+      { "type": "heading", "text": "২. কীভাবে ব্যবহার করি", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "অর্ডার সম্পন্ন করা, delivery, সহায়তা এবং নিরাপত্তা নিশ্চিত করার জন্য তথ্য ব্যবহার করা হয়। আমরা আপনার তথ্য বিজ্ঞাপনদাতাদের কাছে বিক্রি করি না।", "align": "left" },
+      { "type": "heading", "text": "৩. তথ্য কতদিন রাখা হয়", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "সম্পন্ন অর্ডার ও সংশ্লিষ্ট বার্তা নির্দিষ্ট সময় (প্রায় ৯০ দিন) পর মুছে ফেলা হয়, আইনি প্রয়োজন ছাড়া।", "align": "left" },
+      { "type": "heading", "text": "৪. আপনার অধিকার", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "আপনার তথ্য দেখা, সংশোধন বা মুছে ফেলার অনুরোধ করতে পারেন: privacy@medidoor.com.bd", "align": "left" },
+      { "type": "heading", "text": "দ্রষ্টব্য", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "এটি একটি প্রাথমিক খসড়া। চূড়ান্ত প্রকাশের আগে আইনি যাচাইয়ের পরামর্শ দেওয়া হলো।", "align": "left" }
+    ]
+  },
+  {
+    "slug": "cookies",
+    "title": "Cookie নীতি",
+    "subtitle": "আমরা কীভাবে cookie ও অনুরূপ প্রযুক্তি ব্যবহার করি।",
+    "updated": "২০২৬",
+    "order": 10,
+    "visible": true,
+    "blocks": [
+      { "type": "heading", "text": "প্রয়োজনীয় cookie", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "login session ও নিরাপত্তা ধরে রাখার জন্য কিছু cookie অপরিহার্য; এগুলো ছাড়া সেবা ঠিকভাবে কাজ করে না।", "align": "left" },
+      { "type": "heading", "text": "পছন্দ ও পরিসংখ্যান", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "আপনার অভিজ্ঞতা উন্নত করতে এবং সেবা কেমন চলছে তা বুঝতে আমরা সীমিত পরিসংখ্যান ব্যবহার করতে পারি।", "align": "left" },
+      { "type": "heading", "text": "নিয়ন্ত্রণ", "color": "#06ad65", "bold": true, "align": "left" },
+      { "type": "text", "text": "আপনি browser সেটিংস থেকে cookie নিয়ন্ত্রণ বা মুছে ফেলতে পারেন। প্রশ্ন থাকলে: privacy@medidoor.com.bd", "align": "left" }
+    ]
+  }
+]

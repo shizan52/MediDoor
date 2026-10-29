@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "bd.com.medidoor.customer",
+      "sha256_cert_fingerprints": [
+        "A5:DB:2F:C2:CD:95:F4:B6:47:48:44:B2:9B:68:1B:2D:DA:83:6F:B3:46:C5:B4:8B:A7:91:6D:18:6D:41:49:2B",
+        "F0:71:23:9B:B9:4D:58:FC:C5:C6:CF:34:E5:D0:45:A1:6B:83:F7:B0:F5:69:1A:BF:29:95:0A:1A:A4:F2:28:A3"
+      ]
+    }
+  }
+]

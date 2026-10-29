@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- brand-500 — kept for reference; the rider tile is brand navy. -->
+    <color name="colorPrimary">#06ad65</color>
+
+    <!-- System bars must match the PAGE background (globals.css `body`), not
+         the brand colour — coloured slabs above/below the content look broken.
+         Chrome then keeps them in sync with the live meta[theme-color]. -->
+    <color name="barLight">#f6f7fb</color>
+    <color name="barDark">#03060a</color>
+    <!-- Splash/window background is WHITE so the navy-on-white brand mark
+         blends seamlessly (the mark's own background is white), and the
+         launch never flashes a navy slab before the page paints. -->
+    <color name="backgroundColor">#ffffff</color>
+    <!-- Adaptive-icon background: brand navy (the mark's own ink colour) —
+         this is what distinguishes the rider app from customer (white) and
+         pharmacy (green) on the home screen. The foreground mark is white and
+         TRANSPARENT-backed, so this colour is what actually shows through. -->
+    <color name="ic_launcher_background">#0e2245</color>
+</resources>

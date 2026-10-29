@@ -1,0 +1,4 @@
+# rider.medidoor.com.bd is the Android app's private content server,
+# not a public website. Nothing here should ever be indexed.
+User-agent: *
+Disallow: /

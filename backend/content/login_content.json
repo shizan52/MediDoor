@@ -1,0 +1,122 @@
+{
+  "default": {
+    "eyebrow": "Medicine. Delivered. Fast.",
+    "title_top": "আপনার দরজায়",
+    "title_highlight": "বিশ্বস্ত pharmacy",
+    "body": "MediDoor আপনাকে কাছের verified pharmacy আর trusted rider-এর সাথে যুক্ত করে — মুহূর্তে অর্ডার, real-time tracking, নিরাপদ payment।",
+    "stat_value": "৩ km",
+    "stat_label": "delivery radius",
+    "features": [
+      {
+        "icon": "MapPin",
+        "title": "৩ km radius",
+        "body": "কাছের pharmacy আগে দেখাবে"
+      },
+      {
+        "icon": "ShieldCheck",
+        "title": "Verified only",
+        "body": "শুধু licensed pharmacy"
+      },
+      {
+        "icon": "Sparkles",
+        "title": "AI-guarded",
+        "body": "নিরাপদ chat ও product"
+      },
+      {
+        "icon": "Truck",
+        "title": "Fast riders",
+        "body": "দ্রুত হোম delivery"
+      }
+    ]
+  },
+  "customer": {
+    "eyebrow": "For Customers",
+    "title_top": "ঘরে বসে",
+    "title_highlight": "medicine অর্ডার",
+    "body": "Prescription upload করুন বা search করে অর্ডার দিন। নিকটতম pharmacy থেকে rider আপনার দরজায় পৌঁছে দেবে।",
+    "stat_value": "১৫ min",
+    "stat_label": "average delivery",
+    "features": [
+      {
+        "icon": "Pill",
+        "title": "Prescription upload",
+        "body": "ছবি দিন — pharmacist ম্যাচ করবে"
+      },
+      {
+        "icon": "MapPin",
+        "title": "Live tracking",
+        "body": "rider কোথায় আছে দেখুন"
+      },
+      {
+        "icon": "ShieldCheck",
+        "title": "Genuine medicine",
+        "body": "শুধু licensed source"
+      },
+      {
+        "icon": "Wallet",
+        "title": "Cash / Online",
+        "body": "যেভাবে চান payment করুন"
+      }
+    ]
+  },
+  "pharmacy": {
+    "eyebrow": "For Pharmacies",
+    "title_top": "নিজের pharmacy",
+    "title_highlight": "online এ আনুন",
+    "body": "নতুন customer পান কাছের ৩ km এর মধ্যে। Inventory manage, order accept আর rider অটো-assign — সব এক জায়গায়।",
+    "stat_value": "৫০০+",
+    "stat_label": "monthly orders",
+    "features": [
+      {
+        "icon": "Store",
+        "title": "Local visibility",
+        "body": "৩ km এর সব customer পাবেন"
+      },
+      {
+        "icon": "ClipboardList",
+        "title": "Inventory tools",
+        "body": "stock + price এক click এ update"
+      },
+      {
+        "icon": "Truck",
+        "title": "Auto rider assign",
+        "body": "manually কাউকে কল করতে হবে না"
+      },
+      {
+        "icon": "TrendingUp",
+        "title": "Sales analytics",
+        "body": "weekly + monthly insight"
+      }
+    ]
+  },
+  "rider": {
+    "eyebrow": "For Riders",
+    "title_top": "Deliver করুন,",
+    "title_highlight": "আয় করুন",
+    "body": "নিজের সময়মতো কাজ করুন। nearby pharmacy থেকে customer দরজা পর্যন্ত — প্রতিটি delivery-তে fixed earning।",
+    "stat_value": "৳ ৪০০+",
+    "stat_label": "daily earning",
+    "features": [
+      {
+        "icon": "Bike",
+        "title": "Flexible hours",
+        "body": "যখন ফ্রি, তখন online থাকুন"
+      },
+      {
+        "icon": "MapPin",
+        "title": "Smart routing",
+        "body": "best route auto-suggest"
+      },
+      {
+        "icon": "Wallet",
+        "title": "Daily payout",
+        "body": "প্রতিদিন earning withdraw"
+      },
+      {
+        "icon": "ShieldCheck",
+        "title": "Insurance covered",
+        "body": "duty-time এ সুরক্ষিত"
+      }
+    ]
+  }
+}

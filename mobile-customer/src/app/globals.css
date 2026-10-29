@@ -1,0 +1,237 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------- */
+/*  Safe-area + viewport tokens                                     */
+/*  These read iPhone notch / Dynamic Island / Android punch-hole   */
+/*  insets directly from the OS via env() — set once on :root so    */
+/*  every component can use var(--safe-top) etc.                    */
+/* ---------------------------------------------------------------- */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --bottom-nav-h: 64px;
+  --header-h: 56px;
+  /* Combined offset for fixed bottom UI: nav height + iOS home indicator. */
+  --bottom-nav-total: calc(var(--bottom-nav-h) + var(--safe-bottom));
+}
+
+html, body {
+  height: 100%;
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  @apply bg-white text-slate-900 dark:bg-[#070b12] dark:text-slate-100;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-feature-settings: "ss01", "cv11";
+  /* Prevent iOS rubber-band scroll exposing white background. */
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* The single scroll-container the whole app uses. We scroll this
+   element instead of <body> so the fixed top + bottom bars never
+   wobble during momentum scroll on iOS. */
+.app-scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-top: calc(var(--header-h) + var(--safe-top));
+  padding-bottom: var(--bottom-nav-total);
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+}
+
+/* Use 100dvh fallback chain so the app fills the visible viewport
+   on mobile Safari without being hidden behind the URL bar. */
+.app-viewport {
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+  position: relative;
+  width: 100%;
+  /* On large screens, clamp width so the mobile UI doesn't stretch. */
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+  background: inherit;
+  /* A subtle frame on tablets so it visually reads as a phone surface. */
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.04);
+}
+
+@media (min-width: 481px) {
+  body {
+    background: linear-gradient(180deg, #f6f7fb 0%, #eef0f5 100%);
+  }
+  :is(.dark) body {
+    background: #03060a;
+  }
+  .app-viewport {
+    box-shadow: 0 24px 64px -24px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(15, 23, 42, 0.06);
+    border-radius: 36px;
+    overflow: hidden;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    height: calc(100dvh - 48px);
+  }
+}
+
+/* Hide scrollbars on mobile but keep them on desktop preview */
+.app-scroll::-webkit-scrollbar { width: 0; height: 0; }
+
+/* Press feedback for tap-targets — feels native */
+.tap {
+  transition: transform 120ms ease, opacity 120ms ease;
+}
+.tap:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+
+/* Brand utility — replaces ad-hoc gradients */
+.brand-grad {
+  background: linear-gradient(135deg, #06ad65 0%, #008c52 100%);
+}
+
+/* Glassy card — used by the login hero TiltCard so the 3D pane melts
+ * into the page on both light and dark modes. Mirrors
+ * `frontend/src/app/globals.css`. */
+.glass {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+}
+.dark .glass {
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Animated brand blobs for the login backdrop. Same keyframes as the
+ * website's tailwind preset — kept inline here to avoid extending
+ * tailwind.config.js for a single screen. */
+@keyframes blob {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  33%  { transform: translate3d(20px, -30px, 0) scale(1.05); }
+  66%  { transform: translate3d(-15px, 25px, 0) scale(0.95); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+.animate-blob {
+  animation: blob 18s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Skeleton shimmer */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg,
+    rgba(148,163,184,0.12) 0%,
+    rgba(148,163,184,0.22) 50%,
+    rgba(148,163,184,0.12) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+/* Scrollable horizontal lists (categories, etc.) — hide the bar */
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Hero banner shine — a soft diagonal highlight sweeps across the hero
+   every few seconds so the banner (and its overlaid CTAs) feels alive and
+   premium without distracting from the image. */
+@keyframes heroShine {
+  0%   { transform: translateX(-160%) skewX(-18deg); opacity: 0; }
+  30%  { opacity: 0.5; }
+  60%  { transform: translateX(160%) skewX(-18deg); opacity: 0; }
+  100% { transform: translateX(160%) skewX(-18deg); opacity: 0; }
+}
+.hero-shine { overflow: hidden; }
+.hero-shine::before {
+  content: "";
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  left: 0;
+  width: 45%;
+  background: linear-gradient(100deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
+  animation: heroShine 5s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-shine::before { animation: none; opacity: 0; }
+}
+
+/* ---------------------------------------------------------------- */
+/*  Messenger-style chat                                            */
+/* ---------------------------------------------------------------- */
+
+/* Outgoing bubble gradient — brand green, subtle depth. Mirrors the
+   Facebook Messenger "my messages" treatment but in MediDoor brand. */
+.bubble-out {
+  background: linear-gradient(135deg, #12bd73 0%, #06ad65 55%, #008c52 100%);
+  color: #fff;
+  box-shadow: 0 1px 1px rgba(0, 70, 40, 0.12), 0 2px 6px -2px rgba(0, 108, 62, 0.35);
+}
+
+/* Soft entrance for each newly rendered bubble/card. */
+@keyframes msgIn {
+  0%   { transform: translateY(6px) scale(0.98); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+.animate-msgIn {
+  animation: msgIn 220ms cubic-bezier(0.2, 0.8, 0.2, 1.0) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-msgIn { animation: none; }
+}
+
+/* Centered day / time divider used between message groups. */
+.chat-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 8px 6px;
+  color: rgb(148 163 184);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.chat-divider::before,
+.chat-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(148,163,184,0.28), transparent);
+}
+
+/* Typing indicator dots (used by the header presence + typing bubble). */
+@keyframes typingBounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30%           { transform: translateY(-3px); opacity: 1; }
+}
+.typing-dot { animation: typingBounce 1.2s infinite ease-in-out; }
+.typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.typing-dot:nth-child(3) { animation-delay: 0.3s; }
+
+/* Faint chat wallpaper — a barely-there brand tint so the thread reads
+   as a dedicated surface (like Messenger) without hurting contrast. */
+.chat-surface {
+  background:
+    radial-gradient(120% 80% at 50% -10%, rgba(6,173,101,0.05) 0%, transparent 60%),
+    #ffffff;
+}
+.dark .chat-surface {
+  background:
+    radial-gradient(120% 80% at 50% -10%, rgba(6,173,101,0.10) 0%, transparent 60%),
+    #070b12;
+}

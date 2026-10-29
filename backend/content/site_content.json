@@ -1,0 +1,109 @@
+{
+  "banner": {
+    "image_url": "https://api.medidoor.com.bd/uploads/e9bea31ae9b0df4835921bba5f16f7e4.jpg",
+    "image_url_mobile": "https://api.medidoor.com.bd/uploads/c6e4a311590681191425d7770189c97d.jpg",
+    "eyebrow": "MediDoor — দরজায় ঔষধ",
+    "title_top": "আপনার আশেপাশের verified pharmacy থেকে",
+    "title_highlight": "৩০ মিনিটে delivery।",
+    "subtitle": "Locate me চাপুন — আপনার ৩ km-এর মধ্যে যা যা পাওয়া যায় সব দেখাবো।"
+  },
+  "bot": {
+    "name": "medi AI",
+    "tagline": "MediDoor assistant",
+    "avatar_url": "https://api.medidoor.com.bd/uploads/76d3bb9f5a0337ecb7bcfd9fad4dd738.jpg"
+  },
+  "admin_support": {
+    "name": "MediDoor Admin",
+    "tagline": "Verification & support",
+    "avatar_url": "https://api.medidoor.com.bd/uploads/75a4ad893c0f6e832cbc5bb76ed0c064.jpg"
+  },
+  "footer": {
+    "about": "MediDoor হলো Bangladesh-এর verified pharmacy network — আপনার দরজায় ঔষধ পৌঁছে দেয় ৩০ মিনিটে।",
+    "copyright": "© 2026 MediDoor. সব অধিকার সংরক্ষিত।",
+    "columns": [
+      {
+        "title": "কোম্পানি",
+        "links": [
+          {
+            "label": "আমাদের সম্পর্কে",
+            "href": "/about"
+          },
+          {
+            "label": "ক্যারিয়ার",
+            "href": "/careers"
+          },
+          {
+            "label": "প্রেস",
+            "href": "/press"
+          }
+        ]
+      },
+      {
+        "title": "পার্টনারদের জন্য",
+        "links": [
+          {
+            "label": "ফার্মেসি partner হন",
+            "href": "/login?role=pharmacy"
+          },
+          {
+            "label": "রাইডার হন",
+            "href": "/login?role=rider"
+          },
+          {
+            "label": "Partner support নিন",
+            "href": "/support"
+          }
+        ]
+      },
+      {
+        "title": "সহায়তা",
+        "links": [
+          {
+            "label": "Order সহায়তা",
+            "href": "/help/orders"
+          },
+          {
+            "label": "Refund সহায়তা",
+            "href": "/help/refunds"
+          },
+          {
+            "label": "যোগাযোগ",
+            "href": "/contact"
+          }
+        ]
+      },
+      {
+        "title": "নীতিমালা",
+        "links": [
+          {
+            "label": "শর্তাবলি",
+            "href": "/legal/terms"
+          },
+          {
+            "label": "গোপনীয়তা",
+            "href": "/legal/privacy"
+          },
+          {
+            "label": "Cookie নীতি",
+            "href": "/legal/cookies"
+          }
+        ]
+      }
+    ],
+    "socials": [
+      {
+        "label": "Facebook",
+        "href": "https://facebook.com"
+      },
+      {
+        "label": "Instagram",
+        "href": "https://instagram.com"
+      },
+      {
+        "label": "YouTube",
+        "href": "https://youtube.com"
+      }
+    ]
+  },
+  "pharmacy_notice": ""
+}

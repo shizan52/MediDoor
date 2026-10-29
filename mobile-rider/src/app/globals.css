@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------- */
+/*  Safe-area + viewport tokens                                     */
+/* ---------------------------------------------------------------- */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --bottom-nav-h: 64px;
+  --header-h: 56px;
+  --bottom-nav-total: calc(var(--bottom-nav-h) + var(--safe-bottom));
+}
+
+html, body {
+  height: 100%;
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  @apply bg-white text-slate-900 dark:bg-[#070b12] dark:text-slate-100;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-feature-settings: "ss01", "cv11";
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+.app-scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-top: calc(var(--header-h) + var(--safe-top));
+  padding-bottom: var(--bottom-nav-total);
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+}
+
+.app-viewport {
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+  background: inherit;
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.04);
+}
+
+@media (min-width: 481px) {
+  body {
+    background: linear-gradient(180deg, #f6f7fb 0%, #eef0f5 100%);
+  }
+  :is(.dark) body {
+    background: #03060a;
+  }
+  .app-viewport {
+    box-shadow: 0 24px 64px -24px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(15, 23, 42, 0.06);
+    border-radius: 36px;
+    overflow: hidden;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    height: calc(100dvh - 48px);
+  }
+}
+
+.app-scroll::-webkit-scrollbar { width: 0; height: 0; }
+
+.tap { transition: transform 120ms ease, opacity 120ms ease; }
+.tap:active { transform: scale(0.97); opacity: 0.85; }
+
+.brand-grad { background: linear-gradient(135deg, #06ad65 0%, #008c52 100%); }
+
+.glass {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+}
+.dark .glass {
+  background: rgba(20, 25, 35, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+@keyframes blob {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  33%  { transform: translate3d(20px, -30px, 0) scale(1.05); }
+  66%  { transform: translate3d(-15px, 25px, 0) scale(0.95); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+.animate-blob { animation: blob 18s ease-in-out infinite; will-change: transform; }
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg,
+    rgba(148,163,184,0.12) 0%,
+    rgba(148,163,184,0.22) 50%,
+    rgba(148,163,184,0.12) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Pulse used by the "live" indicators throughout the rider app. */
+@keyframes onlinePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.55); }
+  50%      { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+}
+.online-dot { animation: onlinePulse 1.4s ease-out infinite; }

@@ -1,0 +1,21 @@
+// MediDoor Rider — Trusted Web Activity (TWA) wrapper.
+// The app is a thin, signed Android shell around
+// https://rider.medidoor.com.bd — ALL product UI/logic lives on the
+// server, so shipping a web deploy (rider_update.py) updates every
+// installed app instantly, no Play-Store release needed.
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "medidoor-rider"
+include ':app'

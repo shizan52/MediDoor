@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MediDoor</string>
+    <!-- `?app=1` is the app's signature: the web gate in layout.tsx trusts it
+         to tell the TWA apart from a normal browser tab, so the app can never
+         be mistaken for a visitor and bounced to the website. -->
+    <string name="launch_url">https://customer.medidoor.com.bd/?app=1</string>
+    <!-- Must mirror /.well-known/assetlinks.json on the live origin. -->
+    <string name="asset_statements">
+        [{
+            \"relation\": [\"delegate_permission/common.handle_all_urls\"],
+            \"target\": {
+                \"namespace\": \"web\",
+                \"site\": \"https://customer.medidoor.com.bd\"
+            }
+        }]
+    </string>
+</resources>
